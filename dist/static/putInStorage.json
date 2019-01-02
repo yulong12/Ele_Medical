@@ -1,0 +1,81 @@
+{
+  "drug": [
+    {
+      "name": "头孢克肟片",
+      "manufacturers": "白云山制药总厂",
+      "amount": "200",
+      "handlers":"黄处",
+      "temperature":"01",
+      "qualityOfficer":"林安徽",
+      "warehouseman":"梁尚",
+      "pattern":"01",
+      "species":"西药",
+      "productionData":"2017-6-29 10:24:48",
+      "specification":"0.65g",
+      "dosageForm":"瓶装",
+      "date2":"2017-6-29 10:24:48"
+    },
+    {
+      "name": "注射用益气复脉",
+      "manufacturers": "天津天士力制药公司",
+      "amount": "100",
+      "handlers":"黄处",
+      "temperature":"02",
+      "qualityOfficer":"林安徽",
+      "warehouseman":"梁尚",
+      "pattern":"01",
+      "species":"西药",
+      "productionData":"2017-6-29 10:24:48",
+      "specification":"",
+      "dosageForm":"片狀",
+      "date2":"2017-6-29 10:24:48"
+    },
+    {
+      "name": "注射用益气复脉",
+      "manufacturers": "天津天士力制药公司",
+      "amount": "100",
+      "handlers":"黄处",
+      "temperature":"02",
+      "qualityOfficer":"林安徽",
+      "warehouseman":"梁尚",
+      "pattern":"01",
+      "species":"西药",
+      "productionData":"2017-6-29 10:24:48",
+      "specification":"",
+      "dosageForm":"片狀",
+      "date2":"2017-6-29 10:24:48"
+    },
+    {
+      "name": "注射用益气复脉",
+      "manufacturers": "天津天士力制药公司",
+      "amount": "100",
+      "handlers":"黄处",
+      "temperature":"02",
+      "qualityOfficer":"林安徽",
+      "warehouseman":"梁尚",
+      "pattern":"01",
+      "species":"西药",
+      "productionData":"2017-6-29 10:24:48",
+      "specification":"",
+      "dosageForm":"片狀",
+      "date2":"2017-6-29 10:24:48"
+    },
+    {
+      "name": "注射用益气复脉",
+      "manufacturers": "天津天士力制药公司",
+      "amount": "100",
+      "handlers":"黄处",
+      "temperature":"02",
+      "qualityOfficer":"林安徽",
+      "warehouseman":"梁尚",
+      "pattern":"01",
+      "species":"西药",
+      "productionData":"2017-6-29 10:24:48",
+      "specification":"",
+      "dosageForm":"片狀",
+      "date2":"2017-6-29 10:24:48"
+    }
+  ]
+}
+
+
