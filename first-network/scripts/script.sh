@@ -25,11 +25,11 @@ MAX_RETRY=10
 
 CC_SRC_PATH="github.com/chaincode/fabcar/go/"
 if [ "$LANGUAGE" = "node" ]; then
-	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/chaincode_example02/node/"
+	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/fabcar/node/"
 fi
 
-if [ "$LANGUAGE" = "java" ]; then
-	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/chaincode_example02/java/"
+if [ "$LANGUAGE" = "go" ]; then
+	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/fabcar/go/"
 fi
 
 echo "Channel name : "$CHANNEL_NAME
