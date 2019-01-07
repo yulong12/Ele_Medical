@@ -1,88 +1,88 @@
-患者基本信息：Patient_Basic_Info
-患者编号：Patient_Num
-患者姓名：Patient_Name
-患者身份证号：Patient_Identity_Number
-患者性别:Patient_Sex
-患者出生日期：Patient_Birth_Date
-患者民族：Patient_Nationality
-患者血型：Patient_Blood_Group
-患者职业：Patient_Job
-患者工作单位：Patient_Employer
-患者电话：Patient_Tel
-患者亲友姓名：Patient_Relative_Name
-患者亲友电话：Patient_Relative_Tel
-患者婚姻状况：Patient_Marriage_Status
-患者生育状况：Patient_Fertility_Status
-患者生育年龄：Patient_Fertility_Age
-患者儿子数量：Patient_Son_Num
-患者女儿数量：Patient_Girl_Num
-患者病史：Patient_Medical_History
-患者吸烟史:Patient_Smoke_History
-患者家族遗传史：Patient_Family_Genetic_History
+患者基本信息：PatientBasicInfo
+患者编号：PatientNum
+患者姓名：PatientName
+患者身份证号：PatientIdentityNumber
+患者性别:PatientSex
+患者出生日期：PatientBirthDate
+患者民族：PatientNationality
+患者血型：PatientBloodGroup
+患者职业：PatientJob
+患者工作单位：PatientEmployer
+患者电话：PatientTel
+患者亲友姓名：PatientRelativeName
+患者亲友电话：PatientRelativeTel
+患者婚姻状况：PatientMarriageStatus
+患者生育状况：PatientFertilityStatus
+患者生育年龄：PatientFertilityAge
+患者儿子数量：PatientSonNum
+患者女儿数量：PatientGirlNum
+患者病史：PatientMedicalHistory
+患者吸烟史:PatientSmokeHistory
+患者家族遗传史：PatientFamilyGeneticHistory
 
  
 
 
- 住院患者表：Resident_Info
- 住院流水号：Resident_Num
- 住院者姓名；Resident_Name
- 患者编号：Resident_Patient_Num
- 就诊科室：Resident_Department
- 床位号：Resident_Bed_Num
- 主管医生：Resident_Supervisor
-主管护士：Resident_Supervisor_Nurse
-住院日期：Resident_In_Date
-出院日期:Resident_Out_Date
-备注：Resident_Attention
+ 住院患者表：ResidentInfo
+ 住院流水号：ResidentNum
+ 住院者姓名；ResidentName
+ 患者编号：ResidentPatientNum
+ 就诊科室：ResidentDepartment
+ 床位号：ResidentBedNum
+ 主管医生：ResidentSupervisor
+主管护士：ResidentSupervisorNurse
+住院日期：ResidentInDate
+出院日期:ResidentOutDate
+备注：ResidentAttention
 
 
 
-电子病历信息：Record_Info
-文档编号：Record_Num
-住院流水号：Record_Resident_Num
-文档名称:Record_Name
-创建医生:Record_Create_Doctor
-创建时间：Record_Create_Time
-文档路径:Record_Path
-文档哈希值:Record_Hash_Value
-备注：Record_Attention
+电子病历信息：RecordInfo
+文档编号：RecordNum
+住院流水号：RecordResidentNum
+文档名称:RecordName
+创建医生:RecordCreateDoctor
+创建时间：RecordCreateTime
+文档路径:RecordPath
+文档哈希值:RecordHashValue
+备注：RecordAttention
 
 
-临床路径：Clinical_Pathway
-临床路径编号：Clinical_Pathway_Num
-临床路径名称：Clinical_Pathway_Name
-备注：Clinical_Pathway_Attention
-
-
-
-临床路径项：Clinical_Pathway_Item
-临床路径项编号：Clinical_Pathway_Item_Num
-临床路径项名称：Clinical_Pathway_Item_Name
-备注：Clinical_Pathway_Item_Attention
+临床路径：ClinicalPathway
+临床路径编号：ClinicalPathwayNum
+临床路径名称：ClinicalPathwayName
+备注：ClinicalPathwayAttention
 
 
 
-
-患者临床路径：Patient_Clinical_Pathway
-患者临床路径编号：Patient_Clinical_Pathway_Num
-临床路径编号：Clinical_Pathway_Num
-项目开始时间：Patient_Clinical_Begin_Time
-住院流水号：Resident_Num
-创建医生：Patient_Clinical_Pathway_Creator
-备注：Patient_Clinical_Pathway_Attention
+临床路径项：ClinicalPathwayItem
+临床路径项编号：ClinicalPathwayItemNum
+临床路径项名称：ClinicalPathwayItemName
+备注：ClinicalPathwayItemAttention
 
 
 
 
-临床路径与临床路径项关系：Clinical_Relation
-临床路径编号：Clinical_Pathway_Num
-临床路径项编号：Clinical_Pathway_Item_Num
-备注：Clinical_Relation_Attention
+患者临床路径：PatientClinicalPathway
+患者临床路径编号：PatientClinicalPathwayNum
+临床路径编号：ClinicalPathwayNum
+项目开始时间：PatientClinicalBeginTime
+住院流水号：ResidentNum
+创建医生：PatientClinicalPathwayCreator
+备注：PatientClinicalPathwayAttention
 
 
-临床路径执行情况：Clinical_Pathway_Execu_Status
-临床路径执行编号：Clinical_Pathway_Execu_Num
-临床路径项编号：Clinical_Pathway_Item_Num
-执行时间：Clinical_Pathway_Execu_Time
-完成情况：Clinical_Pathway_Execu_Status
-备注：Clinical_Pathway_Execu_Attention
+
+
+临床路径与临床路径项关系：ClinicalRelation
+临床路径编号：ClinicalPathwayNum
+临床路径项编号：ClinicalPathwayItemNum
+备注：ClinicalRelationAttention
+
+
+临床路径执行情况：ClinicalPathwayExecuStatus
+临床路径执行编号：ClinicalPathwayExecuNum
+临床路径项编号：ClinicalPathwayItemNum
+执行时间：ClinicalPathwayExecuTime
+完成情况：ClinicalPathwayExecuStatus
+备注：ClinicalPathwayExecuAttention
