@@ -694,7 +694,7 @@ func (sc *SimpleChaincode) queryClinicalPathwayItem(stub shim.ChaincodeStubInter
 	if err != nil {
 		return shim.Error(getErrReason(GetDataFBlock, "0"))
 	}
-	err = json.Unmarshal(clinicalPathwayItemb, clinicalPathwayItem)
+	err = json.Unmarshal(clinicalPathwayItemb, &clinicalPathwayItem)
 	if err != nil {
 		return shim.Error(getErrReason(UnmarshlFailed, "0"))
 	}
@@ -924,7 +924,7 @@ func (sc *SimpleChaincode) queryClinicalPathwayExecuStatus(stub shim.ChaincodeSt
 	if err != nil {
 		return shim.Error(getErrReason(GetDataFBlock, "0"))
 	}
-	err = json.Unmarshal(clinicalPathwayExecuStatusb, clinicalPathwayExecuStatus)
+	err = json.Unmarshal(clinicalPathwayExecuStatusb, &clinicalPathwayExecuStatus)
 	if err != nil {
 		return shim.Error(getErrReason(UnmarshlFailed, "0"))
 	}
