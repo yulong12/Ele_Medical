@@ -1,4 +1,4 @@
-#采用dev模式检测chaincode
+# 采用dev模式检测chaincode
 
 
 ## 1.激活
@@ -65,7 +65,11 @@ peer chaincode invoke -n mycc -c '{"Args":["queryClinicalRelation", "66666666666
 ```
 ### 9,添加和查询临床路径执行情况
 
+```
+
 peer chaincode invoke -n mycc -c '{"Args":["addClinicalPathwayExecuStatus", "77777777777777","44444444444444","20190101","good","attention"]}' -C myc
 
 
 peer chaincode invoke -n mycc -c '{"Args":["queryClinicalPathwayExecuStatus", "77777777777777"]}' -C myc
+
+```
