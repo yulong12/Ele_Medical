@@ -657,43 +657,312 @@ func (sc *SimpleChaincode) queryClinicalPathway(stub shim.ChaincodeStubInterface
 }
 
 //添加临床路径项
+// 临床路径项编号：ClinicalPathwayItemNum
+// 临床路径项名称：ClinicalPathwayItemName
+// 备注：ClinicalPathwayItemAttention
+
 func (sc *SimpleChaincode) addClinicalPathwayItem(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	return shim.Success(nil)
+	if len(args) != 3 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	var clinicalPathwayItem ClinicalPathwayItem
+	clinicalPathwayItem.ClinicalPathwayItemNum = args[0]
+	clinicalPathwayItem.ClinicalPathwayItemName = args[1]
+	clinicalPathwayItem.ClinicalPathwayItemAttention = args[2]
+	clinicalPathwayItemb, err := json.Marshal(clinicalPathwayItem)
+	if err != nil {
+		return shim.Error(getErrReason(MarshalFailed, "0"))
+	}
+	err = stub.PutState(args[0], clinicalPathwayItemb)
+	if err != nil {
+		return shim.Error(getErrReason(SaveStubFailed, "0"))
+	}
+	return shim.Success(getRetReason(SaveBlockSuc, "1"))
 }
 
 //查询临床路径项
+//args:ClinicalPathwayItemNum
 func (sc *SimpleChaincode) queryClinicalPathwayItem(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	return shim.Success(nil)
+	if len(args) != 1 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+
+	}
+	var err error
+	var clinicalPathwayItem ClinicalPathwayItem
+	clinicalPathwayItemb, err := stub.GetState(args[0])
+	if err != nil {
+		return shim.Error(getErrReason(GetDataFBlock, "0"))
+	}
+	err = json.Unmarshal(clinicalPathwayItemb, clinicalPathwayItem)
+	if err != nil {
+		return shim.Error(getErrReason(UnmarshlFailed, "0"))
+	}
+
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+	// bArrayMemberAlreadyWritten := false
+	// if bArrayMemberAlreadyWritten == true {
+	// 	buffer.WriteString(",")
+	// }
+	buffer.WriteString("{\"ClinicalPathwayItemNum\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalPathwayItem.ClinicalPathwayItemNum)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"ClinicalPathwayItemName\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalPathwayItem.ClinicalPathwayItemName)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"ClinicalPathwayItemAttention\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalPathwayItem.ClinicalPathwayItemAttention)
+	buffer.WriteString("}")
+	// bArrayMemberAlreadyWritten = true
+	buffer.WriteString("]")
+	logger.Infof("===========buffer======buffer========k=%s", buffer.String())
+	return shim.Success(buffer.Bytes())
 }
 
 //添加患者临床路径
+// 患者临床路径编号：PatientClinicalPathwayNum
+// 临床路径编号：ClinicalPathwayNum
+// 项目开始时间：PatientClinicalBeginTime
+// 住院流水号：ResidentNum
+// 创建医生：PatientClinicalPathwayCreator
+// 备注：PatientClinicalPathwayAttention
 func (sc *SimpleChaincode) addPatientClinicalPathway(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	return shim.Success(nil)
+	if len(args) != 6 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	var patientClinicalPathway PatientClinicalPathway
+	patientClinicalPathway.PatientClinicalPathwayNum = args[0]
+	patientClinicalPathway.ClinicalPathwayNum = args[1]
+	patientClinicalPathway.PatientClinicalBeginTime = args[2]
+	patientClinicalPathway.ResidentNum = args[3]
+	patientClinicalPathway.PatientClinicalPathwayCreator = args[4]
+	patientClinicalPathway.PatientClinicalPathwayAttention = args[5]
+	patientClinicalPathwayb, err := json.Marshal(patientClinicalPathway)
+	if err != nil {
+		return shim.Error(getErrReason(MarshalFailed, "0"))
+	}
+	err = stub.PutState(args[0], patientClinicalPathwayb)
+	if err != nil {
+		return shim.Error(getErrReason(SaveStubFailed, "0"))
+	}
+	return shim.Success(getRetReason(SaveBlockSuc, "1"))
 }
 
 //查询患者临床路径
+// args:患者临床路径编号：PatientClinicalPathwayNum
 func (sc *SimpleChaincode) queryPatientClinicalPathway(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	return shim.Success(nil)
+	if len(args) != 1 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	var patientClinicalPathway PatientClinicalPathway
+	patientClinicalPathwayb, err := stub.GetState(args[0])
+	if err != nil {
+		return shim.Error(getErrReason(GetDataFBlock, "0"))
+	}
+	err = json.Unmarshal(patientClinicalPathwayb, &patientClinicalPathway)
+	if err != nil {
+		return shim.Error(getErrReason(UnmarshlFailed, "0"))
+	}
+
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+	// bArrayMemberAlreadyWritten := false
+	// if bArrayMemberAlreadyWritten == true {
+	// 	buffer.WriteString(",")
+	// }
+	buffer.WriteString("{\"PatientClinicalPathwayNum\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(patientClinicalPathway.PatientClinicalPathwayNum)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"ClinicalPathwayNum\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(patientClinicalPathway.ClinicalPathwayNum)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"PatientClinicalBeginTime\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(patientClinicalPathway.PatientClinicalBeginTime)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"ResidentNum\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(patientClinicalPathway.ResidentNum)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"PatientClinicalPathwayCreator\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(patientClinicalPathway.PatientClinicalPathwayCreator)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"PatientClinicalPathwayAttention\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(patientClinicalPathway.PatientClinicalPathwayAttention)
+	buffer.WriteString("}")
+	// bArrayMemberAlreadyWritten = true
+	buffer.WriteString("]")
+	logger.Infof("===========buffer======buffer========k=%s", buffer.String())
+	return shim.Success(buffer.Bytes())
 }
 
 //添加临床与临床路径项的关系
+
+// 临床路径编号：ClinicalPathwayNum
+// 临床路径项编号：ClinicalPathwayItemNum
+// 备注：ClinicalRelationAttention
+
 func (sc *SimpleChaincode) addClinicalRelation(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	return shim.Success(nil)
+	if len(args) != 3 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	var clinicalRelation ClinicalRelation
+	clinicalRelation.ClinicalPathwayNum = args[0]
+	clinicalRelation.ClinicalPathwayItemNum = args[1]
+	clinicalRelation.ClinicalRelationAttention = args[2]
+	clinicalRelationb, err := json.Marshal(clinicalRelation)
+	if err != nil {
+		return shim.Error(getErrReason(MarshalFailed, "0"))
+	}
+	err = stub.PutState(args[0], clinicalRelationb)
+	if err != nil {
+		return shim.Error(getErrReason(SaveStubFailed, "0"))
+	}
+
+	return shim.Success(getRetReason(SaveBlockSuc, "1"))
 }
 
 //查询临床与临床路径项的关系
+// 临床路径编号：ClinicalPathwayNum
 func (sc *SimpleChaincode) queryClinicalRelation(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	return shim.Success(nil)
+	if len(args) != 1 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	var clinicalRelation ClinicalRelation
+	clinicalRelationb, err := stub.GetState(args[0])
+	if err != nil {
+		return shim.Error(getErrReason(GetDataFBlock, "0"))
+	}
+	err = json.Unmarshal(clinicalRelationb, &clinicalRelation)
+	if err != nil {
+		return shim.Error(getErrReason(UnmarshlFailed, "0"))
+	}
+
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+	// bArrayMemberAlreadyWritten := false
+	// if bArrayMemberAlreadyWritten == true {
+	// 	buffer.WriteString(",")
+	// }
+	buffer.WriteString("{\"ClinicalPathwayNum\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalRelation.ClinicalPathwayNum)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"ClinicalPathwayItemNum\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalRelation.ClinicalPathwayItemNum)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"ClinicalRelationAttention\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalRelation.ClinicalRelationAttention)
+	buffer.WriteString("}")
+	// bArrayMemberAlreadyWritten = true
+	buffer.WriteString("]")
+	logger.Infof("===========buffer======buffer========k=%s", buffer.String())
+	return shim.Success(buffer.Bytes())
 }
 
 //添加临床路径执行情况
+// 临床路径执行编号：ClinicalPathwayExecuNum
+// 临床路径项编号：ClinicalPathwayItemNum
+// 执行时间：ClinicalPathwayExecuTime
+// 完成情况：ClinicalPathwayExecuStatus
+// 备注：ClinicalPathwayExecuAttention
+
 func (sc *SimpleChaincode) addClinicalPathwayExecuStatus(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	return shim.Success(nil)
+	if len(args) != 5 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	var clinicalPathwayExecuStatus ClinicalPathwayExecuStatus
+	clinicalPathwayExecuStatus.ClinicalPathwayExecuNum = args[0]
+	clinicalPathwayExecuStatus.ClinicalPathwayItemNum = args[1]
+	clinicalPathwayExecuStatus.ClinicalPathwayExecuTime = args[2]
+	clinicalPathwayExecuStatus.ClinicalPathwayExecuStatus = args[3]
+	clinicalPathwayExecuStatus.ClinicalPathwayExecuAttention = args[4]
+	clinicalPathwayExecuStatusb, err := json.Marshal(clinicalPathwayExecuStatus)
+	if err != nil {
+		return shim.Error(getErrReason(MarshalFailed, "0"))
+	}
+	err = stub.PutState(args[0], clinicalPathwayExecuStatusb)
+	if err != nil {
+		return shim.Error(getErrReason(SaveStubFailed, "0"))
+	}
+	return shim.Success(getRetReason(SaveBlockSuc, "1"))
 }
 
 //查询临床路径执行情况
+//args:临床路径执行编号：ClinicalPathwayExecuNum
 func (sc *SimpleChaincode) queryClinicalPathwayExecuStatus(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	return shim.Success(nil)
+	if len(args) != 1 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	var clinicalPathwayExecuStatus ClinicalPathwayExecuStatus
+	clinicalPathwayExecuStatusb, err := stub.GetState(args[0])
+	if err != nil {
+		return shim.Error(getErrReason(GetDataFBlock, "0"))
+	}
+	err = json.Unmarshal(clinicalPathwayExecuStatusb, clinicalPathwayExecuStatus)
+	if err != nil {
+		return shim.Error(getErrReason(UnmarshlFailed, "0"))
+	}
+
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+	// bArrayMemberAlreadyWritten := false
+	// if bArrayMemberAlreadyWritten == true {
+	// 	buffer.WriteString(",")
+	// }
+	buffer.WriteString("{\"ClinicalPathwayExecuNum\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalPathwayExecuStatus.ClinicalPathwayExecuNum)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"ClinicalPathwayItemNum\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalPathwayExecuStatus.ClinicalPathwayItemNum)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"PatientClinicalBeginTime\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalPathwayExecuStatus.ClinicalPathwayExecuTime)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"ClinicalPathwayExecuStatus\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalPathwayExecuStatus.ClinicalPathwayExecuStatus)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"ClinicalPathwayExecuAttention\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(clinicalPathwayExecuStatus.ClinicalPathwayExecuAttention)
+	buffer.WriteString("}")
+	// bArrayMemberAlreadyWritten = true
+	buffer.WriteString("]")
+	logger.Infof("===========buffer======buffer========k=%s", buffer.String())
+	return shim.Success(buffer.Bytes())
 }
 
 func main() {
