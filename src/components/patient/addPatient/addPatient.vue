@@ -13,12 +13,12 @@
         </el-form-item>
         <el-form-item label="患者来源" prop="region">
           <el-select v-model="ruleForm.region" placeholder="请选择患者来源">
-            <el-option label="挂号" value="guahao"></el-option>
-            <el-option label="门诊" value="menzhen"></el-option>
-            <el-option label="急诊" value="jizhen"></el-option>
-            <el-option label="化验" value="huayan"></el-option>
-            <el-option label="手术" value="shoushu"></el-option>
-            <el-option label="住院" value="huayan"></el-option>
+            <el-option label="挂号" value="挂号"></el-option>
+            <el-option label="门诊" value="门诊"></el-option>
+            <el-option label="急诊" value="急诊"></el-option>
+            <el-option label="化验" value="化验"></el-option>
+            <el-option label="手术" value="手术"></el-option>
+            <el-option label="住院" value="住院"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="身份证号" prop="idCard">
@@ -226,7 +226,26 @@ export default {
       // }, function (response) {
       //   alert('请求失败了');
       // });
-      console.log('您修改后的参数为：', JSON.stringify(this.ruleForm));
+      var params = [];
+      params.push({'date': this.ruleForm.date});
+      params.push({'name': this.ruleForm.name});
+      params.push({'region': this.ruleForm.region});
+      params.push({'idCard': this.ruleForm.idCard});
+      params.push({'sex': this.ruleForm.sex});
+      params.push({'age': this.ruleForm.age});
+      params.push({'phone': this.ruleForm.phone});
+      params.push({'Name': this.ruleForm.Name});
+      params.push({'Phone': this.ruleForm.Phone});
+      params.push({'relation': this.ruleForm.relation});
+      params.push({'address': this.ruleForm.address});
+      params.push({'moreAddress': this.ruleForm.moreAddress});
+      params.push({'symptoms': this.ruleForm.symptoms});
+      params.push({'doctor': this.ruleForm.doctor});
+      params.push({'department': this.ruleForm.department});
+      params.push({'selectProvince1': this.selectProvince1});
+      params.push({'selectCity1': this.selectCity1});
+      var json = JSON.stringify(params);
+      console.log('您修改后的参数为1：', JSON.stringify(json));
     },
     offReset (form) {
       this.$refs[form].resetFields();
@@ -238,7 +257,7 @@ export default {
   },
   watch: {
     selectProvince1: function () {
-      // console.log(this.selectProvince1);
+      console.log(this.selectProvince1);
       for (let i = 0; i < this.ruleForm.provinces.length; i++) {
         if (this.selectProvince1 === this.ruleForm.provinces[i].value) {
           this.ruleForm.citys = this.ruleForm.provinces[i].citys;

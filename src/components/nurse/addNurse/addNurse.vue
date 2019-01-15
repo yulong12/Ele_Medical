@@ -116,6 +116,8 @@ export default {
             type: 'success'
           });
           console.log(this.ruleForm);
+          var json = JSON.stringify(this.ruleForm);
+          console.log('您修改后的参数为：', json);
         } else {
           this.$message.error('提交失败，请重新填写！');
           return false;

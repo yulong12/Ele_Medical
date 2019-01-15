@@ -1,7 +1,7 @@
 <template>
     <div class="login">
       <div class="loginContainer">
-        <h2 class="title">医院内部管理系统登录</h2>
+        <h2 class="title">区块链电子病历系统登录</h2>
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item>
             <el-input v-model.trim="form.name" placeholder="用户名" @keyup.enter.native="nextInput"></el-input>

@@ -1,12 +1,12 @@
 {
   "home": {
 
-    "title": "安逸医院内部管理系统首页",
-    "subheading": "Hospital information system",
-    "survey": "安逸医院内部管理系统是五人团队，精心打造的新一代医院信息管理系统。 按照国家相关规定，高标准、高要求的开发条件，符合国家卫计委《医院信息系统基本功能规范》和卫计委与财务部共同发布的新《医院财务管理制度》的规范 与要求。",
+    "title": "区块链电子病历系统首页",
+    "subheading": "区块链的世界",
+    "survey": "",
     "projectTeam": {
-      "groupLeader": "梁明明",
-      "teamMembers": "陈秋明 李怡敏 谢云凤 邓莹莹",
+      "groupLeader": "张玉龙",
+      "teamMembers": "张玉龙",
       "technology": "vue.js webpack vue-cli vue-router vue-resource ESlint ElementUI stylu github团队协作 Git版本控制工具"
     },
     "introduce": {

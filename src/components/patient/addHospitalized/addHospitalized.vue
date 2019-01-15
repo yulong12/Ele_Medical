@@ -33,12 +33,12 @@
       <el-form :inline="true">
         <el-form-item label="主治医生" prop="doctor">
           <el-select v-model="ruleForm.doctor" placeholder="请选择主治医生">
-            <el-option v-for="item in ruleForm.doctors" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-option v-for="item in ruleForm.doctors" :key="item.value" :label="item.label" :value="item.label"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="照看护士" prop="nurse">
           <el-select v-model="ruleForm.nurse" placeholder="请选择照看护士">
-            <el-option v-for="nurse in ruleForm.nurses" :key="nurse.value" :label="nurse.label" :value="nurse.value"></el-option>
+            <el-option v-for="nurse in ruleForm.nurses" :key="nurse.value" :label="nurse.label" :value="nurse.label"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -196,7 +196,26 @@ export default {
   },
   methods: {
     onSubmit () {
-      console.log('您修改后的参数为：', JSON.stringify(this.ruleForm));
+      var params = [];
+      params.push({'name': this.ruleForm.name});
+      params.push({'age': this.ruleForm.age});
+      params.push({'idCard': this.ruleForm.idCard});
+      params.push({'sex': this.ruleForm.sex});
+      params.push({'address': this.ruleForm.address});
+      params.push({'doctor': this.ruleForm.doctor});
+      params.push({'nurse': this.ruleForm.nurse});
+      params.push({'illness': this.ruleForm.illness});
+      params.push({'treatment': this.ruleForm.treatment});
+      params.push({'medication': this.ruleForm.medication});
+      params.push({'attention': this.ruleForm.attention});
+      params.push({'room': this.ruleForm.room});
+      params.push({'inTime': this.ruleForm.inTime});
+      params.push({'outTime': this.ruleForm.outTime});
+      params.push({'cost': this.ruleForm.cost});
+      params.push({'idCard': this.ruleForm.idCard});
+      params.push({'idCard': this.ruleForm.idCard});
+      var json = JSON.stringify(params);
+      console.log('您修改后的参数为：', json);
     },
     offReset () {
       this.ruleForm = {

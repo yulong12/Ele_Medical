@@ -16,11 +16,11 @@
         </el-form-item>
         <el-form-item label="学历" prop="degree">
           <el-select v-model="form.degree" placeholder="请选择">
-            <el-option label="大专" value="junior"></el-option>
-            <el-option label="本科" value="undergraduate"></el-option>
-            <el-option label="研究生" value="postgraduate"></el-option>
-            <el-option label="博士" value="doctor"></el-option>
-            <el-option label="硕士" value="master"></el-option>
+            <el-option label="大专" value="大专"></el-option>
+            <el-option label="本科" value="本科"></el-option>
+            <el-option label="研究生" value="研究生"></el-option>
+            <el-option label="博士" value="博士"></el-option>
+            <el-option label="硕士" value="硕士"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="专业" prop="major">
@@ -92,6 +92,8 @@
                 message: '添加成功！',
                 type: 'success'
               });
+              var json = JSON.stringify(this.form);
+              console.log('您修改后的参数为1：', JSON.stringify(json));
             } else {
               this.$message({
                 showClose: true,

@@ -1,40 +1,40 @@
 {
   "provinces": [
     {
-      "value": "shanxi",
+      "value": "山西省",
       "label": "山西省",
       "citys": [{
-        "value": "taiyuan",
+        "value": "太原市",
         "label": "太原市"
       },{
-        "value": "datong",
+        "value": "大同市",
         "label": "大同市"
       },{
-        "value": "yangquan",
+        "value": "阳泉市",
         "label": "阳泉市"
       },{
-        "value": "changzhi",
+        "value": "长治市",
         "label": "长治市"
       },{
-        "value": "jincheng",
+        "value": "晋城市",
         "label": "晋城市"
       },{
-        "value": "suzhou",
+        "value": "朔州市",
         "label": "朔州市"
       },{
-        "value": "jinzhong",
+        "value": "晋中市",
         "label": "晋中市"
       },{
-        "value": "yuncheng",
+        "value": "运城市",
         "label": "运城市"
       },{
-        "value": "qizhou",
+        "value": "忻州市",
         "label": "忻州市"
       },{
-        "value": "linfen",
+        "value": "临汾市",
         "label": "临汾市"
       },{
-        "value": "lvliang",
+        "value": "吕梁市",
         "label": "吕梁市"
       }]
     },{
