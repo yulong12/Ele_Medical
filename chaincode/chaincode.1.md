@@ -5,19 +5,30 @@
 患者姓名：PatientName 
 患者来源：PatientFrom
 患者身份证号：PatientIdentityNumber  
+
+患者年龄：PatientAge
+患者电话：PatientTel 
 患者性别:PatientSex 
-患者出生日期：PatientBirthDate 
+
+
 患者民族：PatientNationality 
 患者血型：PatientBloodGroup 
 患者职业：PatientJob  
-患者电话：PatientTel 
+
+家庭地址：PatientAddress
+
+
 患者亲友姓名：PatientRelativeName 
 患者亲友电话：PatientRelativeTel 
+与患者关系：PatientRelation
+患者亲友身体状况：PatientRelationStatus
+
 患者病史：PatientMedicalHistory  
 患者吸烟史:PatientSmokeHistory 
 患者家族遗传史：PatientFamilyGeneticHistory 
 患者主治医生姓名：PatientDoctor
 患者就诊科室：PatientdePartment
+
  ```
 
 

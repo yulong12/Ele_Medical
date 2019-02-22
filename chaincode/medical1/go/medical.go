@@ -14,18 +14,50 @@ var logger = shim.NewLogger("电子病历")
 type SimpleChaincode struct {
 }
 
+// 患者姓名：PatientName
+// 患者来源：PatientFrom
+// 患者身份证号：PatientIdentityNumber
+
+// 患者年龄：PatientAge
+// 患者电话：PatientTel
+// 患者性别:PatientSex
+
+// 患者民族：PatientNationality
+// 患者血型：PatientBloodGroup
+// 患者职业：PatientJob
+
+// 家庭地址：PatientAddress
+
+// 患者亲友姓名：PatientRelativeName
+// 患者亲友电话：PatientRelativeTel
+// 与患者关系：PatientRelation
+// 患者亲友身体状况：PatientRelationStatus
+
+// 患者病史：PatientMedicalHistory
+// 患者吸烟史:PatientSmokeHistory
+// 患者家族遗传史：PatientFamilyGeneticHistory
+// 患者主治医生姓名：PatientDoctor
+// 患者就诊科室：PatientdePartment
 type PatientBasicInfo struct {
-	PatientName                 string `json:"PatientName "`
-	PatientFrom                 string `json:"PatientFrom"`
-	PatientIdentityNumber       string `json:"PatientIdentityNumber "`
-	PatientSex                  string `json:"PatientSex "`
-	PatientBirthDate            string `json:"PatientBirthDate "`
-	PatientNationality          string `json:"PatientNationality "`
-	PatientBloodGroup           string `json:"PatientBloodGroup "`
-	PatientJob                  string `json:"PatientJob "`
-	PatientTel                  string `json:"PatientTel "`
-	PatientRelativeName         string `json:"PatientRelativeName"`
-	PatientRelativeTel          string `json:"PatientRelativeTel "`
+	PatientName           string `json:"PatientName "`
+	PatientFrom           string `json:"PatientFrom"`
+	PatientIdentityNumber string `json:"PatientIdentityNumber "`
+
+	PatientAge string `json:"PatientAge"`
+	PatientTel string `json:"PatientTel "`
+	PatientSex string `json:"PatientSex "`
+
+	PatientNationality string `json:"PatientNationality "`
+	PatientBloodGroup  string `json:"PatientBloodGroup "`
+	PatientJob         string `json:"PatientJob "`
+
+	PatientAddress string `json;"PatientAddress"`
+
+	PatientRelativeName   string `json:"PatientRelativeName"`
+	PatientRelativeTel    string `json:"PatientRelativeTel "`
+	PatientRelation       string `json;"PatientRelation"`
+	PatientRelationStatus string `json:"PatientRelationStatus"`
+
 	PatientMedicalHistory       string `json:"PatientMedicalHistory "`
 	PatientSmokeHistory         string `json:"PatientSmokeHistory "`
 	PatientFamilyGeneticHistory string `json:"PatientFamilyGeneticHistory"`
@@ -80,21 +112,29 @@ func (sc *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response 
 // 患者姓名：PatientName
 // 患者来源：PatientFrom
 // 患者身份证号：PatientIdentityNumber
+
+// 患者年龄：PatientAge
+// 患者电话：PatientTel
 // 患者性别:PatientSex
-// 患者出生日期：PatientBirthDate
+
 // 患者民族：PatientNationality
 // 患者血型：PatientBloodGroup
 // 患者职业：PatientJob
-// 患者电话：PatientTel
+
+// 家庭地址：PatientAddress
+
 // 患者亲友姓名：PatientRelativeName
 // 患者亲友电话：PatientRelativeTel
+// 与患者关系：PatientRelation
+// 患者亲友身体状况：PatientRelationStatus
+
 // 患者病史：PatientMedicalHistory
 // 患者吸烟史:PatientSmokeHistory
 // 患者家族遗传史：PatientFamilyGeneticHistory
 // 患者主治医生姓名：PatientDoctor
 // 患者就诊科室：PatientdePartment
 func (sc *SimpleChaincode) addPatientBasicInfo(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	if len(args) != 16 {
+	if len(args) != 19 {
 		return shim.Error(getErrReason(InvalidNumArgs, "0"))
 	}
 	var err error
@@ -102,19 +142,28 @@ func (sc *SimpleChaincode) addPatientBasicInfo(stub shim.ChaincodeStubInterface,
 	patientBasicInfo.PatientName = args[0]
 	patientBasicInfo.PatientFrom = args[1]
 	patientBasicInfo.PatientIdentityNumber = args[2]
-	patientBasicInfo.PatientSex = args[3]
-	patientBasicInfo.PatientBirthDate = args[4]
-	patientBasicInfo.PatientNationality = args[5]
-	patientBasicInfo.PatientBloodGroup = args[6]
-	patientBasicInfo.PatientJob = args[7]
-	patientBasicInfo.PatientTel = args[8]
-	patientBasicInfo.PatientRelativeName = args[9]
-	patientBasicInfo.PatientRelativeTel = args[10]
-	patientBasicInfo.PatientMedicalHistory = args[11]
-	patientBasicInfo.PatientSmokeHistory = args[12]
-	patientBasicInfo.PatientFamilyGeneticHistory = args[13]
-	patientBasicInfo.PatientDoctor = args[14]
-	patientBasicInfo.PatientdePartment = args[15]
+
+	patientBasicInfo.PatientAge = args[3]
+	patientBasicInfo.PatientTel = args[4]
+	patientBasicInfo.PatientSex = args[5]
+
+	patientBasicInfo.PatientNationality = args[6]
+	patientBasicInfo.PatientBloodGroup = args[7]
+	patientBasicInfo.PatientJob = args[8]
+
+	patientBasicInfo.PatientAddress = args[9]
+
+	patientBasicInfo.PatientRelativeName = args[10]
+	patientBasicInfo.PatientRelativeTel = args[11]
+	patientBasicInfo.PatientRelation = args[12]
+	patientBasicInfo.PatientRelationStatus = args[13]
+
+	patientBasicInfo.PatientMedicalHistory = args[14]
+	patientBasicInfo.PatientSmokeHistory = args[15]
+	patientBasicInfo.PatientFamilyGeneticHistory = args[16]
+	patientBasicInfo.PatientDoctor = args[17]
+	patientBasicInfo.PatientdePartment = args[18]
+
 	patientBasicInfob, err := json.Marshal(patientBasicInfo)
 	if err != nil {
 		return shim.Error(getErrReason(MarshalFailed, "0"))
@@ -167,9 +216,14 @@ func (sc *SimpleChaincode) queryPatientBasicInfo(stub shim.ChaincodeStubInterfac
 	buffer.WriteString(patientBasicInfo.PatientSex)
 	buffer.WriteString("\"")
 
-	buffer.WriteString("{\"PatientBirthDate   \":")
+	buffer.WriteString("{\"PatientAge  \":")
 	buffer.WriteString("\"")
-	buffer.WriteString(patientBasicInfo.PatientBirthDate)
+	buffer.WriteString(patientBasicInfo.PatientAge)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"PatientRelation   \":")
+	buffer.WriteString("\"")
+	buffer.WriteString(patientBasicInfo.PatientRelation)
 	buffer.WriteString("\"")
 
 	buffer.WriteString("{\"PatientNationality    \":")
@@ -200,6 +254,16 @@ func (sc *SimpleChaincode) queryPatientBasicInfo(stub shim.ChaincodeStubInterfac
 	buffer.WriteString("{\"PatientRelativeTel        \":")
 	buffer.WriteString("\"")
 	buffer.WriteString(patientBasicInfo.PatientRelativeTel)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"PatientRelation        \":")
+	buffer.WriteString("\"")
+	buffer.WriteString(patientBasicInfo.PatientRelation)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"PatientRelationStatus        \":")
+	buffer.WriteString("\"")
+	buffer.WriteString(patientBasicInfo.PatientRelationStatus)
 	buffer.WriteString("\"")
 
 	buffer.WriteString("{\"PatientMedicalHistory         \":")
