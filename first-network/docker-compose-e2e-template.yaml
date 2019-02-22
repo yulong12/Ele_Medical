@@ -18,7 +18,7 @@ networks:
   byfn:
 services:
   ca0:
-    image: hyperledger/fabric-ca:$IMAGE_TAG
+    image: hyperledger/fabric-ca:1.3.0
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-org1
@@ -35,7 +35,7 @@ services:
       - byfn
 
   ca1:
-    image: hyperledger/fabric-ca:$IMAGE_TAG
+    image: hyperledger/fabric-ca:1.3.0
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca-org2
@@ -109,7 +109,7 @@ services:
 
   cli:
     container_name: cli
-    image: hyperledger/fabric-tools:$IMAGE_TAG
+    image: hyperledger/fabric-tools:1.3.0
     tty: true
     stdin_open: true
     environment:

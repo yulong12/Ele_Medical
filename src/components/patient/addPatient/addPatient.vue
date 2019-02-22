@@ -40,6 +40,17 @@
         </el-form-item>
       </div>
       <div>
+        <el-form-item label="民族" prop="nationality">
+          <el-input v-model="ruleForm.nationality"></el-input>
+        </el-form-item>
+        <el-form-item label="血型" prop="bloodGroup ">
+          <el-input v-model="ruleForm.bloodGroup"></el-input> 
+        </el-form-item>
+        <el-form-item label="职业" prop="job ">
+        <el-input v-model="ruleForm.job"></el-input> 
+        </el-form-item>
+      </div>
+      <div>
         <el-form-item label="家庭地址">
           <el-select v-model="selectProvince1" placeholder="选择省份">
             <el-option v-for="item in ruleForm.provinces" :key="item.value" :label="item.label" :value="item.value">
@@ -84,6 +95,18 @@
         <h3>是否有病史？如果有，请简单说明</h3><br>
         <el-form-item label="病史简单说明" prop="illHistory">
           <el-input type="textarea" v-model="ruleForm.illHistory"></el-input>
+        </el-form-item>
+      </div>
+      <div>
+        <h3>家族是否有遗传史？如果有，请简单说明</h3><br>
+        <el-form-item label="遗传史简单说明" prop="geneticHistory">
+          <el-input type="textarea" v-model="ruleForm.geneticHistory"></el-input>
+        </el-form-item>
+      </div>
+      <div>
+        <h3>吸烟史</h3><br>
+        <el-form-item label="吸烟史简单说明" prop="smokeHistory">
+          <el-input type="textarea" v-model="ruleForm.smokeHistory"></el-input>
         </el-form-item>
       </div>
       <div>
@@ -178,7 +201,13 @@ export default {
         moreAddress: '',
         symptoms: '',
         doctor: '',
-        department: ''
+        department: '',
+        nationality: '',
+        bloodGroup: '',
+        job: '',
+        geneticHistory: '',
+        smokeHistory: ''
+
       },
       selectProvince1: '',
       selectCity1: '',
@@ -244,6 +273,11 @@ export default {
       params.push({'department': this.ruleForm.department});
       params.push({'selectProvince1': this.selectProvince1});
       params.push({'selectCity1': this.selectCity1});
+      params.push({'nationality': this.ruleForm.nationality});
+      params.push({'bloodGroup': this.ruleForm.bloodGroup});
+      params.push({'job': this.ruleForm.job});
+      params.push({'geneticHistory': this.ruleForm.geneticHistory});
+      params.push({'smokeHistory': this.ruleForm.smokeHistory});
       var json = JSON.stringify(params);
       console.log('您修改后的参数为1：', JSON.stringify(json));
     },
