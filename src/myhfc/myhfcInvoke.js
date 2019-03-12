@@ -7,20 +7,20 @@ var sdkUtils = require('fabric-client/lib/utils');
 var fs = require('fs');
 var options = require('./org1Config');
 
-function getKeyFilesInDir(dir) {
-//该函数用于找到keystore目录下的私钥文件的路径
+function getKeyFilesInDir (dir) {
+// 该函数用于找到keystore目录下的私钥文件的路径
     var files = fs.readdirSync(dir);
     var keyFiles = [];
     files.forEach(function (file_name) {
         var filePath = path.join(dir, file_name);
         if (file_name.endsWith('_sk')) {
-            keyFiles.push(filePath)
+            keyFiles.push(filePath);
         }
     });
-    return keyFiles
+    return keyFiles;
 }
 
-function postInvokeRequest(requestJson,callback) {
+function postInvokeRequest (requestJson, callback) {
     var channel = {};
     var client = null;
     var targets = [];
@@ -29,7 +29,7 @@ function postInvokeRequest(requestJson,callback) {
 
     var fcn_request = requestJson;
     Promise.resolve().then(function () {
-        console.log("Load privateKey and signedCert");
+        console.log('Load privateKey and signedCert');
         client = new hfc();
         var createUserOpt = {
             username: options.user_id,
@@ -39,13 +39,13 @@ function postInvokeRequest(requestJson,callback) {
                 signedCert: options.signedCert
             }
         };
-//以上代码指定了当前用户的私钥，证书等基本信息
+// 以上代码指定了当前用户的私钥，证书等基本信息
         return sdkUtils.newKeyValueStore({
-            path: "/tmp/fabric-client-stateStore/"
+            path: '/tmp/fabric-client-stateStore/'
         }).then(function (store) {
             client.setStateStore(store);
             return client.createUser(createUserOpt);
-        })
+        });
     }).then(function (user) {
         channel = client.newChannel(options.channel_id);
         var data = fs.readFileSync(options.peer_tls_cacerts);
@@ -54,21 +54,21 @@ function postInvokeRequest(requestJson,callback) {
                 pem: Buffer.from(data).toString(),
                 'ssl-target-name-override': options.server_hostname
             });
-//因为启用了TLS，所以上面的代码就是指定Peer的TLS的CA证书
+// 因为启用了TLS，所以上面的代码就是指定Peer的TLS的CA证书
         channel.addPeer(peer);
-//接下来连接Orderer的时候也启用了TLS，也是同样的处理方法
+// 接下来连接Orderer的时候也启用了TLS，也是同样的处理方法
         var odata = fs.readFileSync(options.orderer_tls_cacerts);
         var caroots = Buffer.from(odata).toString();
         var orderer = client.newOrderer(options.orderer_url, {
             'pem': caroots,
-            'ssl-target-name-override': "orderer.example.com"
+            'ssl-target-name-override': 'orderer.example.com'
         });
 
         channel.addOrderer(orderer);
         targets.push(peer);
     }).then(function () {
         tx_id = client.newTransactionID();
-        console.log("Assigning transaction_id: ", tx_id._transaction_id);
+        console.log('Assigning transaction_id: ', tx_id._transaction_id);
         fcn_request.txId = tx_id;
         fcn_request.targets = targets;
         return channel.sendTransactionProposal(fcn_request);
@@ -102,7 +102,7 @@ function postInvokeRequest(requestJson,callback) {
             var transactionID = tx_id.getTransactionID();
             var eventPromises = [];
             var eh = client.newEventHub();
-            //接下来设置EventHub，用于监听Transaction是否成功写入，这里也是启用了TLS
+            // 接下来设置EventHub，用于监听Transaction是否成功写入，这里也是启用了TLS
             var data = fs.readFileSync(options.peer_tls_cacerts);
             var grpcOpts = {
                 pem: Buffer.from(data).toString(),
@@ -116,7 +116,7 @@ function postInvokeRequest(requestJson,callback) {
                     eh.disconnect();
                     reject();
                 }, 30000);
-//向EventHub注册事件的处理办法
+// 向EventHub注册事件的处理办法
                 eh.registerTxEvent(transactionID, function (tx, code) {
                     clearTimeout(handle);
                     eh.unregisterTxEvent(transactionID);
@@ -152,10 +152,8 @@ function postInvokeRequest(requestJson,callback) {
             return 'Failed to send Proposal or receive valid response. Response null or status is not 200. exiting...';
         }
     }, function (err) {
-        console.error('Failed to send proposal due to error: ' + err.stack ? err.stack :
-            err);
-        return 'Failed to send proposal due to error: ' + err.stack ? err.stack :
-            err;
+        console.error('Failed to send proposal due to error: ' + err.stack ? err.stack : err);
+        return 'Failed to send proposal due to error: ' + err.stack ? err.stack : err;
     }).then(function (response) {
         if (response.status === 'SUCCESS') {
             console.log('Successfully sent transaction to the orderer.');
@@ -173,14 +171,13 @@ function postInvokeRequest(requestJson,callback) {
         if (callback && typeof(callback) === "function") {
             callback(str);
         }
-    },function (err) {
+    }, function (err) {
         console.error('Failed to send proposal due to error: ' + err.stack ? err.stack :
             err);
         return 'Failed to send proposal due to error: ' + err.stack ? err.stack :
             err;
     }).catch(function (err) {
-        console.error("Caught Error", err);
+        console.error('Caught Error', err);
     });
 }
-
 module.exports = postInvokeRequest;

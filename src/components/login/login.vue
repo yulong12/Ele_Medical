@@ -13,8 +13,9 @@
             <el-button type="primary" @click="_login">登录</el-button>
           </el-form-item>
         </el-form>
-        <p class="tips">本系统有六个测试的用户账号为root、doctor、nurse、checkstand、pharmacist、pharmacy，
+        <p class="tips">本系统有三个测试的用户账号为root、doctor、nurse、
           密码为各自用户名，例如root用户的密码为root。其中最高权限是root用户 </p>
+          <!-- checkstand、pharmacist、pharmacy， -->
       </div>
     </div>
 </template>

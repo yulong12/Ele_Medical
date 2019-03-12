@@ -136,6 +136,7 @@
 </template>
 <script type="text/ecmascript-6">
 import {api} from '../../../global/api.js';
+
 export default {
   data () {
     let checkAge = (rule, value, callback) => {
@@ -248,38 +249,46 @@ export default {
   },
   methods: {
     onSubmit () {
-      // let me = this;
-      // this.$http.post('../../static/patient/addPatient.json').then(function (response) {
-      //   console.log('这是我们需要的json数据', response.ruleForm);
-      //   me.ruleForm = me.data.ruleForm;
-      // }, function (response) {
-      //   alert('请求失败了');
-      // });
+      let me = this;
+      this.$http.post('/addPatient').then(function (response) {
+        console.log('这是我们需要的json数据', response.ruleForm);
+        me.ruleForm = me.data.ruleForm;
+      }, function (response) {
+        alert('请求失败了');
+      });
       var params = [];
-      params.push({'date': this.ruleForm.date});
-      params.push({'name': this.ruleForm.name});
-      params.push({'region': this.ruleForm.region});
-      params.push({'idCard': this.ruleForm.idCard});
-      params.push({'sex': this.ruleForm.sex});
-      params.push({'age': this.ruleForm.age});
-      params.push({'phone': this.ruleForm.phone});
-      params.push({'Name': this.ruleForm.Name});
-      params.push({'Phone': this.ruleForm.Phone});
-      params.push({'relation': this.ruleForm.relation});
-      params.push({'address': this.ruleForm.address});
-      params.push({'moreAddress': this.ruleForm.moreAddress});
-      params.push({'symptoms': this.ruleForm.symptoms});
-      params.push({'doctor': this.ruleForm.doctor});
-      params.push({'department': this.ruleForm.department});
-      params.push({'selectProvince1': this.selectProvince1});
-      params.push({'selectCity1': this.selectCity1});
-      params.push({'nationality': this.ruleForm.nationality});
-      params.push({'bloodGroup': this.ruleForm.bloodGroup});
-      params.push({'job': this.ruleForm.job});
-      params.push({'geneticHistory': this.ruleForm.geneticHistory});
-      params.push({'smokeHistory': this.ruleForm.smokeHistory});
+      params.push({'name': this.ruleForm.name});//患者姓名
+      params.push({'region': this.ruleForm.region});// 患者来源
+      params.push({'idCard': this.ruleForm.idCard});// 患者身份证号
+      params.push({'age': this.ruleForm.age});// 患者年龄
+      params.push({'phone': this.ruleForm.phone});// 患者联系方式
+      params.push({'sex': this.ruleForm.sex});// 患者性别
+      params.push({'nationality': this.ruleForm.nationality});// 患者民族
+      params.push({'bloodGroup': this.ruleForm.bloodGroup});// 患者血型
+      params.push({'job': this.ruleForm.job});// 患者工作
+      params.push({'address': this.selectProvince1 + this.selectCity1});// 家庭住址
+      params.push({'Name': this.ruleForm.Name});// 联系人姓名
+      params.push({'Phone': this.ruleForm.Phone});// 联系人联系方式
+      params.push({'relation': this.ruleForm.relation});// 与患者关系
+      params.push({'symptoms': this.ruleForm.symptoms});// 联系人身体状况
+      params.push({'illHistory': this.ruleForm.illHistory});// 简单病史说明
+      params.push({'geneticHistory': this.ruleForm.geneticHistory});// 遗传史说明
+      params.push({'smokeHistory': this.ruleForm.smokeHistory});// 吸烟史说明
+      params.push({'doctor': this.ruleForm.doctor});// 主治医生姓名
+      params.push({'department': this.ruleForm.department});// 主治医生科室
       var json = JSON.stringify(params);
       console.log('您修改后的参数为1：', JSON.stringify(json));
+      // var addPatientData = require('./../../../myhfc/myhfcInvoke');
+      // var options = require('./../../../myhfc/org1Config');
+      // var request = {
+      //   chaincodeId: options.chaincode_id,
+      //   fcn: 'addPatientBasicInfo',
+      //   args: [this.ruleForm.name, this.ruleForm.region, this.ruleForm.idCard, this.ruleForm.age, this.ruleForm.phone, this.ruleForm.sex, this.ruleForm.nationality, this.ruleForm.bloodGroup, this.ruleForm.job, this.selectProvince1 + this.selectCity1, this.ruleForm.Name, this.ruleForm.Phone, this.ruleForm.relation, this.ruleForm.symptoms, this.ruleForm.illHistory, this.ruleForm.geneticHistory, this.ruleForm.smokeHistory, this.ruleForm.doctor, this.ruleForm.department],
+      //   chainId: options.channel_id
+      // };
+      // addPatientData(request, function (str) {
+      //   console.log(str);
+      // });
     },
     offReset (form) {
       this.$refs[form].resetFields();

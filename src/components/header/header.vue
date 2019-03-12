@@ -4,7 +4,7 @@
         <el-button>
           <div class="wapper">
             <span>{{easeHis}}</span>
-            <img id="userPic"src="//2.gravatar.com/avatar/767fc9c115a1b989744c755db47feb60?s=132&d=wavatar" alt="user" height="40">
+            <img id="userPic"src="./../../assets/myPic.jpg" alt="user" height="40">
             <i class="el-icon-caret-bottom"></i>
           </div>
         </el-button>

@@ -55,11 +55,11 @@ import shiftDoctor from '@/components/doctor/shiftDoctor/shiftDoctor';
 import staffFlow from '@/components/doctor/staffFlow/staffFlow';
 import officeComplaints from '@/components/doctor/officeComplaints/officeComplaints';
 
-// 医院基本信息组件
-import hisIntroduction from '@/components/introduction/hisIntroduction/hisIntroduction';
-import staffIntroduction from '@/components/introduction/staffIntroduction/staffIntroduction';
-import patientCount from '@/components/introduction/patientCount/patientCount';
-import patientFeedback from '@/components/introduction/patientFeedback/patientFeedback';
+// 电子病历管理组件
+import queryDownRecord from '@/components/record/queryDownRecord/queryDownRecord';
+import uploadRecord from '@/components/record/uploadRecord/uploadRecord';
+import queryCheck from '@/components/record/queryCheck/queryCheck';
+import queryDelete from '@/components/record/queryDelete/queryDelete';
 Vue.use(Router);
 Vue.use(VueResource);
 
@@ -100,10 +100,10 @@ export default new Router({
         { path: '/shift', name: 'shift', component: shift },
         { path: '/turnOver', name: 'turnOver', component: turnOver },
         { path: '/complainInfo', name: 'complainInfo', component: complainInfo },
-        { path: '/hisIntroduction', name: 'hisIntroduction', component: hisIntroduction },
-        { path: '/staffIntroduction', name: 'staffIntroduction', component: staffIntroduction },
-        { path: '/patientCount', name: 'patientCount', component: patientCount },
-        { path: '/patientFeedback', name: 'patientFeedback', component: patientFeedback },
+        { path: '/queryDownRecord', name: 'queryDownRecord', component: queryDownRecord },
+        { path: '/uploadRecord', name: 'uploadRecord', component: uploadRecord },
+        { path: '/queryDelete', name: 'queryDelete', component: queryDelete },
+        { path: '/queryCheck', name: 'queryCheck', component: queryCheck },
         { path: '/officeComplaints', name: 'officeComplaints', component: officeComplaints },
         { path: '/addTrashy', name: 'addTrashy', component: addTrashy },
         {path: '*', redirect: '/home'}

@@ -23,13 +23,13 @@ LANGUAGE=`echo "$LANGUAGE" | tr [:upper:] [:lower:]`
 COUNTER=1
 MAX_RETRY=10
 
-CC_SRC_PATH="github.com/chaincode/fabcar/go/"
+CC_SRC_PATH="github.com/chaincode/medical/go/"
 if [ "$LANGUAGE" = "node" ]; then
-	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/fabcar/node/"
+	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/medical/node/"
 fi
 
 if [ "$LANGUAGE" = "go" ]; then
-	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/fabcar/go/"
+	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/medical/go/"
 fi
 
 echo "Channel name : "$CHANNEL_NAME
