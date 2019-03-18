@@ -135,8 +135,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import {api} from '../../../global/api.js';
-
+ import {api} from '../../../global/api.js';
 export default {
   data () {
     let checkAge = (rule, value, callback) => {
@@ -249,13 +248,14 @@ export default {
   },
   methods: {
     onSubmit () {
-      let me = this;
-      this.$http.post('/addPatient').then(function (response) {
-        console.log('这是我们需要的json数据', response.ruleForm);
-        me.ruleForm = me.data.ruleForm;
-      }, function (response) {
-        alert('请求失败了');
-      });
+    
+      // let me = this;
+      // me.$http.post('/first').then(function (response) {
+      //   console.log('这是我们需要的json数据', response.ruleForm);
+      //   me.ruleForm = me.data.ruleForm;
+      // }, function (response) {
+      //   alert('请求失败了');
+      // });
       var params = [];
       params.push({'name': this.ruleForm.name});//患者姓名
       params.push({'region': this.ruleForm.region});// 患者来源
@@ -277,18 +277,43 @@ export default {
       params.push({'doctor': this.ruleForm.doctor});// 主治医生姓名
       params.push({'department': this.ruleForm.department});// 主治医生科室
       var json = JSON.stringify(params);
-      console.log('您修改后的参数为1：', JSON.stringify(json));
-      // var addPatientData = require('./../../../myhfc/myhfcInvoke');
-      // var options = require('./../../../myhfc/org1Config');
-      // var request = {
-      //   chaincodeId: options.chaincode_id,
-      //   fcn: 'addPatientBasicInfo',
-      //   args: [this.ruleForm.name, this.ruleForm.region, this.ruleForm.idCard, this.ruleForm.age, this.ruleForm.phone, this.ruleForm.sex, this.ruleForm.nationality, this.ruleForm.bloodGroup, this.ruleForm.job, this.selectProvince1 + this.selectCity1, this.ruleForm.Name, this.ruleForm.Phone, this.ruleForm.relation, this.ruleForm.symptoms, this.ruleForm.illHistory, this.ruleForm.geneticHistory, this.ruleForm.smokeHistory, this.ruleForm.doctor, this.ruleForm.department],
-      //   chainId: options.channel_id
-      // };
-      // addPatientData(request, function (str) {
-      //   console.log(str);
-      // });
+    console.log('您修改后的参数为1：', JSON.stringify(json));
+    var data={};
+    data.name=this.ruleForm.name;
+    data.region=this.ruleForm.region;
+    data.idCard=this.ruleForm.idCard;
+    data.age=this.ruleForm.age;
+    data.phone=this.ruleForm.phone;
+    data.sex=this.ruleForm.sex;
+    data.nationality=this.ruleForm.nationality;
+    data.bloodGroup=this.ruleForm.bloodGroup;
+    data.job=this.ruleForm.job;
+    data.address=this.ruleForm.selectProvince1+this.ruleForm.selectCity1;
+    data.Name=this.ruleForm.Name;
+    data.Phone=this.ruleForm.Phone;
+    data.relation=this.ruleForm.relation;
+    data.symptoms=this.ruleForm.symptoms;
+    data.illHistory=this.ruleForm.illHistory;
+    data.geneticHistory=this.ruleForm.geneticHistory;
+    data.smokeHistory=this.ruleForm.smokeHistory;
+    data.doctor=this.ruleForm.doctor;
+    data.department=this.ruleForm.department;
+
+      let me = this;
+      var data1={};
+      data1.name="张玉龙";
+      data1.password="111111";
+      me.$http.post('http://localhost:3000/first',{header:'Access-Control-Allow-Origin'}).then(function (response) {
+        console.log('这是我们需要的json数据', response.data);
+      
+    
+      }, function (response) {
+        console.log("======response======");
+        console.log(response)
+        alert('请求失败了');
+      });
+
+
     },
     offReset (form) {
       this.$refs[form].resetFields();

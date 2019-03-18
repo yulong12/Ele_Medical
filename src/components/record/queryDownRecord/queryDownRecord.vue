@@ -1,7 +1,7 @@
 <template>
 
 <div>
-<div>
+<div align="center">
   <el-row>
       <el-input v-model="input" width="20dp" icon="search" @click="handelSearch" placeholder="请输入要查询电子病历的编号"></el-input>
     <el-button type="primary" round>查询</el-button>

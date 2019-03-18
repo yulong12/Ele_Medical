@@ -40,6 +40,7 @@ import addPersonalDate from '@/components/header/homepage/addPersonalDate';
 import absenceRequest from '@/components/header/homepage/absenceRequest';
 import departure from '@/components/header/homepage/departure';
 import hasComplaints from '@/components/header/homepage/hasComplaints';
+import applyRecord from '@/components/patient/applyRecord/applyRecord';
 
 // 药库组件
 import drugStorage from '@/components/drugStorage/putInStorage/putInStorage';
@@ -58,7 +59,6 @@ import officeComplaints from '@/components/doctor/officeComplaints/officeComplai
 // 电子病历管理组件
 import queryDownRecord from '@/components/record/queryDownRecord/queryDownRecord';
 import uploadRecord from '@/components/record/uploadRecord/uploadRecord';
-import queryCheck from '@/components/record/queryCheck/queryCheck';
 import queryDelete from '@/components/record/queryDelete/queryDelete';
 Vue.use(Router);
 Vue.use(VueResource);
@@ -84,6 +84,7 @@ export default new Router({
         { path: '/addPatient', name: 'addPatient', component: addPatient },
         { path: '/hasPatient', name: 'hasPatient', component: hasPatient },
         { path: '/hasRegistered', name: 'hasRegistered', component: hasRegistered },
+        { path: '/applyRecord', name: 'applyRecord', component: applyRecord},
         { path: '/addHospitalized', name: 'addHospitalized', component: addHospitalized },
         { path: '/addPersonalDate', name: 'addPersonalDate', component: addPersonalDate },
         { path: '/absenceRequest', name: 'absenceRequest', component: absenceRequest },
@@ -103,7 +104,6 @@ export default new Router({
         { path: '/queryDownRecord', name: 'queryDownRecord', component: queryDownRecord },
         { path: '/uploadRecord', name: 'uploadRecord', component: uploadRecord },
         { path: '/queryDelete', name: 'queryDelete', component: queryDelete },
-        { path: '/queryCheck', name: 'queryCheck', component: queryCheck },
         { path: '/officeComplaints', name: 'officeComplaints', component: officeComplaints },
         { path: '/addTrashy', name: 'addTrashy', component: addTrashy },
         {path: '*', redirect: '/home'}

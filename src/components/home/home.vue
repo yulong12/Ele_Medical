@@ -38,44 +38,35 @@
         </ul>
       </div>
 
-      <h4>三、前台收银系统</h4>
+      <!-- <h4>三、前台收银系统</h4>
       <ul>
         <li v-for="item in home.introduce.cashier">
           {{item}}
         </li>
-      </ul>
+      </ul> -->
 
-      <h4>四、药房系统</h4>
+      <!-- <h4>四、药房系统</h4>
       <h5>中药房、西药房</h5>
         <ul>
         <li v-for="item in home.introduce.pharmacy">
           {{item}}
         </li>
-      </ul> 
+      </ul>  -->
      
-      <h4>五、药库系统</h4>
+      <!-- <h4>五、药库系统</h4>
       <ul>
         <li v-for="item in home.introduce.drugStorage">
           {{item}}
         </li>
-      </ul> 
-      <h4>六、患者模块</h4>
+      </ul>  -->
+      <h4>三、患者模块</h4>
        <ul>
         <li v-for="item in home.introduce.patient">
           {{item}}
         </li>
       </ul>
 
-      <h4>七、医院基本信息</h4>
-       <ul>
-        <li v-for="item in home.introduce.hospital">
-          {{item}}
-        </li>
-      </ul>
-
-
-
-      <h4>八、登录模块</h4>
+      <h4>四、登录模块</h4>
        <ul>
         <li v-for="item in home.introduce.register">
           {{item}}
@@ -83,7 +74,7 @@
       </ul>
 
 
-      <h4>九、个人主页</h4>
+      <h4>五、个人主页</h4>
        <ul>
         <li v-for="item in home.introduce.personalHomepage">
           {{item}}

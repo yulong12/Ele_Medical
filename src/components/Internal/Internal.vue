@@ -98,7 +98,7 @@
               <el-menu-item index="7-1" v-if="type === '01'  || type === '04'"><router-link to="addPatient">建立患者档案</router-link></el-menu-item>
               <el-menu-item index="7-2"><router-link to="hasPatient">查看患者列表信息</router-link></el-menu-item>
               <el-menu-item index="7-3"><router-link to="hasRegistered">查看患者挂号列表信息</router-link></el-menu-item>
-              <el-menu-item index="7-4"><router-link to="hasRegistered">远程请求病历</router-link></el-menu-item>
+              <el-menu-item index="7-4"><router-link to="applyRecord">远程请求病历</router-link></el-menu-item>
               <el-menu-item index="7-5" v-if="type === '01' || type === '02'"><router-link to="addHospitalized">建立住院患者档案</router-link></el-menu-item>
             </el-menu-item-group>
           </el-submenu>
@@ -112,7 +112,7 @@
               <el-menu-item index="8-2"><router-link to="uploadRecord">上传病历</router-link></el-menu-item>
               <el-menu-item index="8-3"><router-link to="queryDownRecord">查询下载病历</router-link></el-menu-item>
               <el-menu-item index="8-4"><router-link to="queryDelete">查询删除病历</router-link></el-menu-item>
-              <el-menu-item index="8-5"><router-link to="queryCheck">审核电子病历</router-link></el-menu-item>
+              <!-- <el-menu-item index="8-5"><router-link to="queryCheck">审核电子病历</router-link></el-menu-item> -->
             </el-menu-item-group>
           </el-submenu>
         </el-menu>
