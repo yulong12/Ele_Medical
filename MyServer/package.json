@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "fabric-ca-client": "^1.0.2",
+    "fabric-client": "^1.2.1"
   }
 }

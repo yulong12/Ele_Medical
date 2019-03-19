@@ -8,8 +8,8 @@ router.post("/uploadRecord", (req, res) => {
   var patientNo = req.body.patientNo;
   var patientByte = req.body.patientByte;
   res.json({
-    name: name,
-    pwd: pwd,
+    patientNo: patientNo,
+    patientByte: patientByte,
     status: "sucess",
     dahua: "你好"
   });
