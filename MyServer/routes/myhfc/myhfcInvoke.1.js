@@ -22,13 +22,13 @@ var getKeyFilesInDir = function(dir) {
 
   return keyFiles;
 };
-function postInvokeRequest(requestJson) {
+function postInvokeRequest(requestJson, getResponse) {
   var channel = {};
   var client = null;
   var targets = [];
   var tx_id = null;
   var peer = null;
-  // var responseJston = {};
+  var responseJston = {};
 
   var fcn_rquest = requestJson;
   Promise.resolve()
@@ -116,10 +116,10 @@ function postInvokeRequest(requestJson) {
           )
         );
 
-        // responseJston.status = proposalResponses[0].response.status;
-        // responseJston.payload = response.payload.toString();
-        // var responseJstonstr = JSON.stringify(responseJston);
-        // console.log("-----responseJstonstr------" + responseJstonstr);
+        responseJston.status = proposalResponses[0].response.status;
+        responseJston.payload = proposalResponses[0].response.payload.toString();
+        var responseJstonstr = JSON.stringify(responseJston);
+        console.log("-----responseJstonstr------" + responseJstonstr);
         // build up the request for the orderer to have the transaction committed
         var request = {
           proposalResponses: proposalResponses,
@@ -216,6 +216,9 @@ function postInvokeRequest(requestJson) {
             results[1].event_status
         );
       }
+    })
+    .then(value => {
+      getResponse(responseJston);
     })
     .catch(err => {
       console.error("Failed to invoke successfully :: " + err);

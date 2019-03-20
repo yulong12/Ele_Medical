@@ -5,6 +5,7 @@ var fs = require("fs");
 var options = require("./org1Config");
 var channel = {};
 var client = null;
+
 var getKeyFilesInDir = function(dir) {
   var files = fs.readdirSync(dir);
   var keyFiles = [];
@@ -17,69 +18,80 @@ var getKeyFilesInDir = function(dir) {
 
   return keyFiles;
 };
+function postRequest(requestJson, callback) {
+  var request = requestJson;
+  var queryJson = {};
+  Promise.resolve()
+    .then(function() {
+      console.log("Load privateKey and signedCert");
+      client = new hfc();
+      var createUserOpt = {
+        username: options.user_id,
+        mspid: options.msp_id,
+        cryptoContent: {
+          privateKey: getKeyFilesInDir(options.privateKeyFolder)[0],
+          signedCert: options.signedCert
+        }
+      };
 
-Promise.resolve()
-  .then(function() {
-    console.log("Load privateKey and signedCert");
-    client = new hfc();
-    var createUserOpt = {
-      username: options.user_id,
-      mspid: options.msp_id,
-      cryptoContent: {
-        privateKey: getKeyFilesInDir(options.privateKeyFolder)[0],
-        signedCert: options.signedCert
-      }
-    };
+      return sdkUtils
+        .newKeyValueStore({
+          path: "/tmp/fabric-client-stateStore/"
+        })
+        .then(function(store) {
+          client.setStateStore(store);
+          return client.createUser(createUserOpt);
+        });
+    })
+    .then(function(user) {
+      channel = client.newChannel(options.channel_id);
 
-    return sdkUtils
-      .newKeyValueStore({
-        path: "/tmp/fabric-client-stateStore/"
-      })
-      .then(function(store) {
-        client.setStateStore(store);
-        return client.createUser(createUserOpt);
+      var data = fs.readFileSync(options.peer_tls_cacerts);
+      var peer = client.newPeer(options.network_url, {
+        pem: Buffer.from(data).toString(),
+        "ssl-target-name-override": options.server_hostname
       });
-  })
-  .then(function(user) {
-    channel = client.newChannel(options.channel_id);
 
-    var data = fs.readFileSync(options.peer_tls_cacerts);
-    var peer = client.newPeer(options.network_url, {
-      pem: Buffer.from(data).toString(),
-      "ssl-target-name-override": options.server_hostname
+      peer.setName("peer0");
+      channel.addPeer(peer);
+      return;
+    })
+    .then(function() {
+      console.log("Make query");
+      var transaction_id = client.newTransactionID();
+      console.log("Assigning transaction_id: ", transaction_id._transaction_id);
+
+      // var request = {
+      //   chaincodeId: options.chaincode_id,
+      //   txId: transaction_id,
+      //   fcn: "query",
+      //   args: ["a"]
+      // };
+      request.chaincodeId = options.chaincode_id;
+      request.txId = transaction_id;
+
+      return channel.queryByChaincode(request);
+    })
+    .then(function(query_responses) {
+      console.log("returned from query");
+      if (!query_responses.length) {
+        console.log("No payloads were returned from query");
+      } else {
+        console.log("Query result count = ", query_responses.length);
+      }
+
+      if (query_responses[0] instanceof Error) {
+        console.error("error from query = ", query_responses[0]);
+      }
+      console.log("Response is ", query_responses[0].toString());
+      queryJson.status = "200";
+      queryJson.str = query_responses[0].toString();
+    })
+    .then(value => {
+      callback(queryJson);
+    })
+    .catch(function(err) {
+      console.error("Caught Error", err);
     });
-
-    peer.setName("peer0");
-    channel.addPeer(peer);
-    return;
-  })
-  .then(function() {
-    console.log("Make query");
-    var transaction_id = client.newTransactionID();
-    console.log("Assigning transaction_id: ", transaction_id._transaction_id);
-
-    var request = {
-      chaincodeId: options.chaincode_id,
-      txId: transaction_id,
-      fcn: "query",
-      args: ["a"]
-    };
-
-    return channel.queryByChaincode(request);
-  })
-  .then(function(query_responses) {
-    console.log("returned from query");
-    if (!query_responses.length) {
-      console.log("No payloads were returned from query");
-    } else {
-      console.log("Query result count = ", query_responses.length);
-    }
-
-    if (query_responses[0] instanceof Error) {
-      console.error("error from query = ", query_responses[0]);
-    }
-    console.log("Response is ", query_responses[0].toString());
-  })
-  .catch(function(err) {
-    console.error("Caught Error", err);
-  });
+}
+module.exports = postRequest;
