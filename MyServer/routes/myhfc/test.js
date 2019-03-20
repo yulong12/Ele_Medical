@@ -1,19 +1,39 @@
-var invoke = require("./myhfcInvoke.1");
-var query = require("./myhfcQuery.1");
-// var request = {
-//   fcn: "invoke",
-//   args: ["a", "b", "1"]
-// };
-// invoke(request, function(jsonStr) {
-//   console.log("------status---" + jsonStr.status);
-//   console.log("-----payload----" + jsonStr.payload);
-// });
-
-var requestqueyr = {
-  fcn: "query",
-  args: ["a"]
+var invoke = require("./myhfcInvoke");
+var query = require("./myhfcQuery");
+var request = {
+  fcn: "addPatientBasicInfo",
+  args: [
+    "name",
+    "region",
+    "idCard",
+    "age",
+    "phone",
+    "sex",
+    "nationality",
+    "bloodGroup",
+    "job",
+    "address",
+    "Name",
+    "Phone",
+    "relation",
+    "symptoms",
+    "illHistory",
+    "geneticHistory",
+    "smokeHistory",
+    "doctor",
+    "department"
+  ]
 };
-query(requestqueyr, function(jsonStr) {
+invoke(request, function(jsonStr) {
   console.log("------status---" + jsonStr.status);
-  console.log("-----payload----" + jsonStr.str);
+  console.log("-----payload----" + jsonStr.payload);
 });
+
+// var requestqueyr = {
+//   fcn: "queryPatientBasicInfo",
+//   args: ["idCard"]
+// };
+// query(requestqueyr, function(jsonStr) {
+//   console.log("------status---" + jsonStr.status);
+//   console.log("-----payload----" + jsonStr.str);
+// });

@@ -40,8 +40,8 @@ router.post("/addPatient", (req, res) => {
   var smokeHistory = req.body.smokeHistory;
   var doctor = req.body.doctor;
   var department = req.body.department;
+  console.log("-----name-------" + name);
   var request = {
-    chaincodeId: options.chaincode_id,
     fcn: "addPatientBasicInfo",
     args: [
       name,
@@ -63,11 +63,13 @@ router.post("/addPatient", (req, res) => {
       smokeHistory,
       doctor,
       department
-    ],
-    chainId: options.channel_id
+    ]
   };
+  var stt = JSON.stringify(request);
+  console.log("-----stt-------" + stt);
   addPatientBasicInfo(request, function(str) {
-    console.log("=====str==========" + str);
+    console.log("=====str==========" + str.status);
+    console.log("=====payload==========" + str.payload);
 
     res.send({
       status: "OK",
@@ -75,10 +77,10 @@ router.post("/addPatient", (req, res) => {
     });
   });
 
-  //   res.json({
-  //     status: "sucess",
-  //     dahua: "你好"
-  //   });
+  // res.json({
+  //   status: "sucess",
+  //   dahua: "你好"
+  // });
 });
 
 module.exports = router;

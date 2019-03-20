@@ -8,18 +8,22 @@
   <el-form-item label="请求医院编号" prop="targetNo">
     <el-input v-model.number="ruleForm2.targetNo"></el-input>
   </el-form-item>
-    <el-form-item label="请求病历编号" prop="redicalNO">
+  <el-form-item label="请求病历编号" prop="redicalNO">
     <el-input v-model.number="ruleForm2.redicalNO"></el-input>
   </el-form-item>
 
-  </el-form-item>
-    <el-form-item label="请求人" prop="applier">
+
+  <el-form-item label="请求人" prop="applier">
     <el-input v-model.number="ruleForm2.applier"></el-input>
   </el-form-item>
 
-    </el-form-item>
-    <el-form-item label="请求人编号" prop="applierNo">
+
+  <el-form-item label="请求人编号" prop="applierNo">
     <el-input v-model.number="ruleForm2.applierNo"></el-input>
+  </el-form-item>
+
+  <el-form-item label="请求人所在医院编号" prop="applierHisNo">
+    <el-input v-model.number="ruleForm2.applierHisNo"></el-input>
   </el-form-item>
 
   <el-form-item>
@@ -47,7 +51,8 @@
           targetNo: '',
           redicalNO: '',
           applier: '',
-          applierNo: ''
+          applierNo: '',
+          applierHisNo:''
         },
         rules2: {
           targetNo: [
@@ -60,6 +65,9 @@
             { validator: check, trigger: 'blur' }
           ],
           applierNo: [
+            { validator: check, trigger: 'blur' }
+          ],
+          applierHisNo: [
             { validator: check, trigger: 'blur' }
           ]
         }

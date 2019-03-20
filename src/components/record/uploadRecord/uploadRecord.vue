@@ -12,7 +12,15 @@
   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
   <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
 </el-upload>
+ <!-- <el-form-item label="文件" label-width="120px" margin="20px">
+        <el-upload class="upload-demo" action="" :auto-upload="false" :limit="1" ref="upload" :http-request="upload" multiple>
+          <el-button size="small" type="primary">模拟上传2</el-button>
+        </el-upload>
+      </el-form-item>
+ <el-button class="btn" size="small" type="primary" @click="upload">确定上传2</el-button> -->
+
   </div>
+  
 <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="150px" class="demo-ruleForm" >
   <el-form-item label="病人编号" prop="patientNo">
     <el-input v-model.number="ruleForm2.patientNo"></el-input>

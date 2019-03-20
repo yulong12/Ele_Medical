@@ -199,21 +199,25 @@ export default {
       var params = [];
       params.push({'name': this.ruleForm.name});
       params.push({'age': this.ruleForm.age});
+      params.push({'phone': this.ruleForm.phone});
       params.push({'idCard': this.ruleForm.idCard});
+
       params.push({'sex': this.ruleForm.sex});
       params.push({'address': this.ruleForm.address});
       params.push({'doctor': this.ruleForm.doctor});
       params.push({'nurse': this.ruleForm.nurse});
+
       params.push({'illness': this.ruleForm.illness});
       params.push({'treatment': this.ruleForm.treatment});
       params.push({'medication': this.ruleForm.medication});
       params.push({'attention': this.ruleForm.attention});
+
       params.push({'room': this.ruleForm.room});
       params.push({'inTime': this.ruleForm.inTime});
       params.push({'outTime': this.ruleForm.outTime});
       params.push({'cost': this.ruleForm.cost});
-      params.push({'idCard': this.ruleForm.idCard});
-      params.push({'idCard': this.ruleForm.idCard});
+    
+  
       var json = JSON.stringify(params);
       console.log('您修改后的参数为：', json);
     },
