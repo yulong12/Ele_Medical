@@ -2,8 +2,11 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha1"
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -65,6 +68,39 @@ type PatientBasicInfo struct {
 	PatientdePartment           string `json:"PatientdePartment"`
 }
 
+//  targetNo: 目标医院编号
+//   redicalNO: 病历编号
+//   applier: 申请人
+//   applierNo: 申请人编号
+//   applierHisNo:申请人所在医院编号
+type ApplyRemoteRecord struct {
+	TargetNo     string `json:"TargetNo"`
+	RedicalNO    string `json:"RedicalNO"`
+	Applier      string `json:"Applier"`
+	ApplierNo    string `json:"ApplierNo"`
+	ApplierHisNo string `json:"ApplierHisNo"`
+}
+
+//patientNo:病人ID
+//DocterNo:医生职工编号
+//HisNo：医院编号
+// recordNo: 病历编号,
+// recordName: 病历名称,
+// recordPath: 病历存储路径,
+// recordSize: 病历大小,
+// recordHash: 病历的hash值
+type UploadData struct {
+	PatientNo  string `json:"PatientNo"`
+	DocterNo   string `json:"DocterNo"`
+	HisNo      string `json:"HisNo"`
+	RecordNo   string `json:"RecordNo"`
+	RecordName string `json:"RecordName"`
+	RecordPath string `json:"RecordPath"`
+	RecordSize string `json:"RecordSize"`
+	RecordHash string `json:"RecordHash"`
+}
+
+const APPLYINDEX = "TargetNo~RedicalNO~Applier~ApplierNo~ApplierHisNo"
 const InvalidNumArgs = "参数数量错误"
 const MarshalFailed = "json序列化错误"
 const SaveStubFailed = "存入区块链失败"
@@ -72,6 +108,7 @@ const SaveBlockSuc = "成功存入区块链"
 const CreateKey = "创建组合键失败"
 const GetDataFBlock = "从区块链中取出数据失败"
 const UnmarshlFailed = "json反序列化失败"
+const INDEX = "PatientNo~DocterNo~HisNo~RecordNo~RecordName~RecordPath~RecordSize~RecordHash"
 
 type ErrReason struct {
 	Statue string `json:"Statue"`
@@ -104,9 +141,277 @@ func (sc *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response 
 
 	} else if fun == "queryPatientBasicInfo" {
 		return sc.queryPatientBasicInfo(stub, args)
+	} else if fun == "saveHospitalized" {
+		return sc.saveHospitalized(stub, args)
+	} else if fun == "queryHospitalized" {
+		return sc.queryHospitalized(stub, args)
+	} else if fun == "applyRemoteData" {
+		return sc.applyRemoteData(stub, args)
+	} else if fun == "uploadRecordData" {
+		return sc.uploadRecordData(stub, args)
+	} else if fun == "queryRecordData" {
+		return sc.queryRecordData(stub, args)
 	}
 	return shim.Success(nil)
 
+}
+
+type HospitalData struct {
+	Name       string `json:"Name"`
+	Age        string `json:"Age"`
+	Phone      string `json:"Phone"`
+	IdCard     string `json:"IdCard"`
+	Sex        string `json:"Sex"`
+	Address    string `json:"Address"`
+	Doctor     string `json:"Doctor"`
+	Nurse      string `json:"Nurse"`
+	Illness    string `json:"Illness"`
+	Treatment  string `json:"Treatment"`
+	Medication string `json:"Medication"`
+	Attention  string `json:"Attention"`
+	Room       string `json:"Room"`
+	InTime     string `json:"InTime"`
+	OutTime    string `json:"OutTime"`
+	Cost       string `json:"Cost"`
+}
+
+//住院病历存储
+// name: name,
+// age: age,
+// phone: phone,
+// idCard: idCard,
+// sex: sex,
+// address: address,
+// doctor: doctor,
+// nurse: nurse,
+// illness: illness,
+// treatment: treatment,
+// medication: medication,
+// attention: attention,
+// room: room,
+// inTime: inTime,
+// outTime: outTime,
+// cost: cost
+func (sc *SimpleChaincode) saveHospitalized(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	if len(args) != 16 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	var hisData HospitalData
+	hisData.Name = args[0]
+	hisData.Age = args[1]
+	hisData.Phone = args[2]
+	//计算身份证号的哈希值
+	Sha1Inst := sha1.New()
+	Sha1Inst.Write([]byte(args[3]))
+	Result := Sha1Inst.Sum([]byte(""))
+
+	hisData.IdCard = string(Result[:])
+	logger.Infof("=====string(Result[:])====%s=====", string(Result[:]))
+	hisData.Sex = args[4]
+	hisData.Address = args[5]
+	hisData.Doctor = args[6]
+	hisData.Nurse = args[7]
+	hisData.Illness = args[8]
+	hisData.Treatment = args[9]
+	hisData.Medication = args[10]
+	hisData.Attention = args[11]
+	hisData.Room = args[12]
+	hisData.InTime = args[13]
+	hisData.OutTime = args[14]
+	hisData.Cost = args[15]
+
+	hisDatab, err := json.Marshal(hisData)
+	if err != nil {
+		return shim.Error(getErrReason(MarshalFailed, "0"))
+	}
+	err = stub.PutState(hisData.IdCard, hisDatab)
+	if err != nil {
+		return shim.Error(getErrReason(SaveStubFailed, "0"))
+	}
+
+	return shim.Success(getRetReason(SaveBlockSuc, "1"))
+}
+
+//查询患者住院病历
+// args:idcard
+
+func (sc *SimpleChaincode) queryHospitalized(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	if len(args) != 1 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+
+	//计算身份证号的哈希值
+	Sha1Inst := sha1.New()
+	Sha1Inst.Write([]byte(args[0]))
+	Result := Sha1Inst.Sum([]byte(""))
+	logger.Infof("=====string(Result[:])====%s=====", string(Result[:]))
+	hisDatab, err := stub.GetState(string(Result[:]))
+	if err != nil {
+		return shim.Error(getErrReason(GetDataFBlock, "0"))
+	}
+
+	return shim.Success(hisDatab)
+}
+
+//args:
+// TargetNo
+// RedicalNO
+// Applier
+// ApplierNo
+// ApplierHisNo
+func (sc *SimpleChaincode) applyRemoteData(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	if len(args) != 5 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	applyK, err := stub.CreateCompositeKey(APPLYINDEX, []string{args[0], args[1], args[2], args[3], args[4]})
+	logger.Infof("=====sapplyK===%s=====", applyK)
+	if err != nil {
+		return shim.Error(getErrReason("CreateCompositeKey", "0"))
+	}
+	value := []byte{0x00}
+	err = stub.PutState(applyK, value)
+	if err != nil {
+		return shim.Error(getErrReason(SaveStubFailed, "0"))
+	}
+	return shim.Success(getRetReason("已发出申请", "1"))
+}
+
+//patientNo
+//DocterNo:医生职工编号
+//HisNo:医院编号
+// recordNo: 病历编号,
+// recordName: 病历名称,
+// recordPath: 病历存储路径,
+// recordSize: 病历大小,
+// recordHash: 病历的hash值
+func (sc *SimpleChaincode) uploadRecordData(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	if len(args) != 8 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+	var err error
+	var uploadData UploadData
+	uploadData.PatientNo = args[0]
+	uploadData.DocterNo = args[1]
+	uploadData.HisNo = args[2]
+	uploadData.RecordNo = args[3]
+	uploadData.RecordName = args[4]
+	uploadData.RecordPath = args[5]
+	uploadData.RecordSize = args[6]
+	uploadData.RecordHash = args[7]
+
+	t1 := time.Now().Unix()
+	strtime := strconv.FormatInt(t1, 10)
+	value := []byte{0x00}
+	k, err := stub.CreateCompositeKey(INDEX, []string{uploadData.PatientNo, uploadData.DocterNo, uploadData.HisNo, uploadData.RecordNo, uploadData.RecordName, uploadData.RecordPath, uploadData.RecordSize, uploadData.RecordHash, strtime})
+
+	logger.Infof("=====uploadRecordData=k===%s=====", k)
+	if err != nil {
+		return shim.Error(getErrReason("CreateCompositeKey失败", "0"))
+	}
+	err = stub.PutState(k, value)
+	if err != nil {
+		return shim.Error(getErrReason(SaveStubFailed, "0"))
+	}
+
+	return shim.Success(getRetReason("上传电子病历成功", "1"))
+}
+
+//args :patientNo
+func (sc *SimpleChaincode) queryRecordData(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	if len(args) != 1 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+
+	Iterator, err := stub.GetStateByPartialCompositeKey(INDEX, []string{args[0]})
+	if err != nil {
+		return shim.Error(getErrReason("GetStateByPartialCompositeKey failed", "0"))
+	}
+	defer Iterator.Close()
+
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+
+	bArrayMemberAlreadyWritten := false
+	for Iterator.HasNext() {
+		responseRange, err := Iterator.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		_, compositeKeyParts, err := stub.SplitCompositeKey(responseRange.Key)
+
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		PatientNo := compositeKeyParts[0]
+		DocterNo := compositeKeyParts[1]
+		HisNo := compositeKeyParts[2]
+		RecordNo := compositeKeyParts[3]
+		RecordName := compositeKeyParts[4]
+		RecordPath := compositeKeyParts[5]
+		RecordSize := compositeKeyParts[6]
+		RecordHash := compositeKeyParts[7]
+		time := compositeKeyParts[8]
+
+		// Add a comma before array members, suppress it for the first array member
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{\"PatientNo\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(PatientNo)
+		buffer.WriteString("\"")
+
+		buffer.WriteString("{\"DocterNo\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(DocterNo)
+		buffer.WriteString("\"")
+
+		buffer.WriteString("{\"HisNo\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(HisNo)
+		buffer.WriteString("\"")
+
+		buffer.WriteString("{\"RecordNo\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(RecordNo)
+		buffer.WriteString("\"")
+
+		buffer.WriteString("{\"RecordName\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(RecordName)
+		buffer.WriteString("\"")
+
+		buffer.WriteString("{\"RecordPath\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(RecordPath)
+		buffer.WriteString("\"")
+
+		buffer.WriteString("{\"RecordSize\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(RecordSize)
+		buffer.WriteString("\"")
+
+		buffer.WriteString("{\"RecordHash\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(RecordHash)
+		buffer.WriteString("\"")
+
+		buffer.WriteString("{\"time\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(time)
+		buffer.WriteString("\"")
+
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
+	}
+	buffer.WriteString("]")
+	// var err error
+	// var uploadData UploadData
+
+	return shim.Success(buffer.Bytes())
 }
 
 // 患者姓名：PatientName

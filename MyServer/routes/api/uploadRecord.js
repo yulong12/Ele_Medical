@@ -52,11 +52,13 @@ router.post("/uploadRecord", upload.single("picUrl"), function(req, res, next) {
 
   //向区块链中存储
   var recordNo = req.body.recordNo; //病历编号
+  var patientNo = req.body.patientNo; //病人ID
   console.log("-------recordNo-----" + recordNo);
   var recordName = req.file.originalname; //病历名字，e:X照片
   var recordPath = req.file.path; //存储位置
   var recordSize = req.file.size; //病历大小
   var requestJson = {
+    patientNo: patientNo,
     recordNo: recordNo,
     recordName: recordName,
     recordPath: recordPath,

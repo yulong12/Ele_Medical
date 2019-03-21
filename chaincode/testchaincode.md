@@ -1,75 +1,50 @@
-# 采用dev模式检测chaincode
+# 采用 dev 模式测试 chincode
 
+#### 使用 fabric-sample 中的 chaincode-docker-devmode 来测试
 
-## 1.激活
+#### 详见：https://hyperledger-fabric.readthedocs.io/en/release-1.3/chaincode4ade.html
+
+- 1 配置环境
 
 ```
 CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=mycc:0 ./medical
+```
 
+- 2 安装 chaincode
+
+```
 peer chaincode install -p chaincodedev/chaincode/medical -n mycc -v 0
-
-peer chaincode instantiate -n mycc -v 0 -c '{"Args":[]}' -C myc
 ```
 
-## 2，添加和查询患者基本信息
-```
-
-peer chaincode invoke -n mycc -c '{"Args":["addPatientBasicInfo", "101010101010", "Bob","130521199903090776","woman","19940308","han","O","","Policemen","110","Ada","120","no","no","no","no","no","Chronic pharyngitis","two years","no"]}' -C myc
-
-peer chaincode invoke -n mycc -c '{"Args":["queryPatientBasicInfo", "101010101010"]}' -C myc
-```
-## 3,添加和查询住院信息
-```
-peer chaincode invoke -n mycc -c '{"Args":["addResidentInfo", "11111111111111","Bob","101010101010","surgical","3B01","SuSan","Ali","20190101","20190108","Love Clean"]}' -C myc
-
-
-peer chaincode invoke -n mycc -c '{"Args":["queryResidentInfo", "11111111111111"]}' -C myc
-```
-
-## 4,添加和查询病历信息
-```
-
-peer chaincode invoke -n mycc -c '{"Args":["addRecordInfo", "22222222222222","11111111111111","Medical Record","SuSan","20190108","/user/record","sdafasdfasdfadsfadsfas","no"]}' -C myc
-
-peer chaincode invoke -n mycc -c '{"Args":["queryRecordInfo", "22222222222222"]}' -C myc
-```
-
-## 5,添加和查询临床路径
-```
-
-peer chaincode invoke -n mycc -c '{"Args":["addClinicalPathway", "33333333333333","testClinicalPathway","testClinicalPathway"]}' -C myc
-
-peer chaincode invoke -n mycc -c '{"Args":["queryClinicalPathway", "33333333333333"]}' -C myc
-```
-## 6,添加和查询临床路径项
-```
-peer chaincode invoke -n mycc -c '{"Args":["addClinicalPathwayItem", "44444444444444","testClinicalPathwayItem","testClinicalPathwayItem"]}' -C myc
-
-
-peer chaincode invoke -n mycc -c '{"Args":["queryClinicalPathwayItem", "44444444444444"]}' -C myc
+- 3 激活 chaincode
 
 ```
-## 7,添加和查询患者临床路径
-```
-peer chaincode invoke -n mycc -c '{"Args":["addPatientClinicalPathway", "55555555555555","33333333333333","20190101","11111111111111","SuSan","Rember"]}' -C myc
-
-peer chaincode invoke -n mycc -c '{"Args":["queryPatientClinicalPathway", "55555555555555"]}' -C myc
-```
-## 8,添加和查询临床和临床路径关系
+  peer chaincode instantiate -n mycc -v 0 -c '{"Args":[""]}' -C myc
 ```
 
-peer chaincode invoke -n mycc -c '{"Args":["addClinicalRelation", "66666666666666","44444444444444","atttention"]}' -C myc
-
-
-peer chaincode invoke -n mycc -c '{"Args":["queryClinicalRelation", "66666666666666"]}' -C myc
-```
-### 9,添加和查询临床路径执行情况
+- 4 测试函数 uploadRecordData，上传病历
 
 ```
+  peer chaincode invoke -n mycc -c '{"Args":["uploadRecordData", "patientNo","DocterNo", "HisNo","recordNo","recordName","recordPath","recordSize","recordHash"]}' -C myc
+```
 
-peer chaincode invoke -n mycc -c '{"Args":["addClinicalPathwayExecuStatus", "77777777777777","44444444444444","20190101","good","attention"]}' -C myc
-
-
-peer chaincode invoke -n mycc -c '{"Args":["queryClinicalPathwayExecuStatus", "77777777777777"]}' -C myc
+- 5 测试函数 saveHospitalized，保存住院病历
 
 ```
+peer chaincode invoke -n mycc -c '{"Args":["saveHospitalized", "name", "age","phone","idCard","sex","address","doctor","nurse","illness","treatment","medication","attention","room","inTime","outTime","cost"]}' -C myc
+```
+
+- 6 测试函数 queryHospitalized，查询住院病历
+
+```
+peer chaincode invoke -n mycc -c '{"Args":["queryHospitalized", "idCard"]}' -C myc
+```
+
+- 7 测试函数 applyRemoteData，远程请求病历
+
+```
+  peer chaincode invoke -n mycc -c '{"Args":["applyRemoteData", "TargetNo","RedicalNO","Applier","ApplierNo","ApplierHisNo"]}' -C myc
+```
+
+- 8 测试函数 queryRecordData，查询病历
+  peer chaincode invoke -n mycc -c '{"Args":["queryRecordData", "patientNo"]}' -C myc

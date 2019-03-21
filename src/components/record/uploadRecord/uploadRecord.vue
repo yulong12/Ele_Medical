@@ -22,8 +22,17 @@
   </div>
   
 <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="150px" class="demo-ruleForm" >
-  <el-form-item label="病人编号" prop="patientNo">
+  <el-form-item label="病人ID" prop="patientNo">
     <el-input v-model.number="ruleForm2.patientNo"></el-input>
+  </el-form-item>
+    <el-form-item label="病历编号" prop="recordNO">
+    <el-input v-model.number="ruleForm2.recordNO"></el-input>
+  </el-form-item>
+    <el-form-item label="医生编号" prop="doctorNo">
+    <el-input v-model.number="ruleForm2.doctorNo"></el-input>
+  </el-form-item>
+    <el-form-item label="医院编号" prop="hisNo">
+    <el-input v-model.number="ruleForm2.hisNo"></el-input>
   </el-form-item>
 </el-form>
 
@@ -41,7 +50,7 @@
   </div>
 
   <div align="center">
-      <el-button slot="trigger" size="big" type="primary">哈希值上链</el-button>
+      <el-button slot="trigger" size="big" type="primary">上传</el-button>
   </div>
 
 
@@ -67,7 +76,21 @@
         rules2: {
           patientNo: [
             { validator: check, trigger: 'blur' }
+            
+          ],
+          recordNO: [
+            { validator: check, trigger: 'blur' }
+            
+          ],
+          doctorNo: [
+            { validator: check, trigger: 'blur' }
+            
+          ],
+          hisNo: [
+            { validator: check, trigger: 'blur' }
+            
           ]
+
         }
       };
     },
