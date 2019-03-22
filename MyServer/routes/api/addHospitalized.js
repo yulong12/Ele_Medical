@@ -2,6 +2,7 @@
 //
 const express = require("express");
 const router = express.Router();
+var addHospitalized = require("./../myhfc/myhfcInvoke");
 router.get("/addHospitalized", (req, res) => {
   res.json({ msg: "login works" });
 });
@@ -24,23 +25,34 @@ router.post("/addHospitalized", (req, res) => {
   var cost = req.body.cost;
 
   var requestJson = {
-    name: name,
-    age: age,
-    phone: phone,
-    idCard: idCard,
-    sex: sex,
-    address: address,
-    doctor: doctor,
-    nurse: nurse,
-    illness: illness,
-    treatment: treatment,
-    medication: medication,
-    attention: attention,
-    room: room,
-    inTime: inTime,
-    outTime: outTime,
-    cost: cost
+    fnc: "saveHospitalized",
+    args: [
+      name,
+      age,
+      phone,
+      idCard,
+      sex,
+      address,
+      doctor,
+      nurse,
+      illness,
+      treatment,
+      medication,
+      attention,
+      room,
+      inTime,
+      outTime,
+      cost
+    ]
   };
-  res.json(requestJson);
+  addHospitalized(requestJson, function(str) {
+    console.log("=====str==========" + str.status);
+    console.log("=====payload==========" + str.payload);
+
+    res.send({
+      status: "OK",
+      detail: str
+    });
+  });
 });
 module.exports = router;

@@ -47,4 +47,7 @@ peer chaincode invoke -n mycc -c '{"Args":["queryHospitalized", "idCard"]}' -C m
 ```
 
 - 8 测试函数 queryRecordData，查询病历
+
+```
   peer chaincode invoke -n mycc -c '{"Args":["queryRecordData", "patientNo"]}' -C myc
+```

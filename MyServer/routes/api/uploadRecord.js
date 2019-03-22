@@ -4,6 +4,7 @@ const router = express.Router();
 var multer = require("multer");
 var crypto = require("crypto");
 var fs = require("fs");
+var uploadRecord = require("./../myhfc/myhfcInvoke");
 router.get("/uploadRecord", (req, res) => {
   res.json({ msg: "login works" });
 });
@@ -53,21 +54,45 @@ router.post("/uploadRecord", upload.single("picUrl"), function(req, res, next) {
   //向区块链中存储
   var recordNo = req.body.recordNo; //病历编号
   var patientNo = req.body.patientNo; //病人ID
+  var doctorNo = req.body.doctorNo;
+  var hisNO = req.body.hisNO;
   console.log("-------recordNo-----" + recordNo);
   var recordName = req.file.originalname; //病历名字，e:X照片
   var recordPath = req.file.path; //存储位置
-  var recordSize = req.file.size; //病历大小
+  var recordSize = req.file.size + ""; //病历大小
+  //patientNo
+  //DocterNo:医生职工编号
+  //HisNo:医院编号
+  // recordNo: 病历编号,
+  // recordName: 病历名称,
+  // recordPath: 病历存储路径,
+  // recordSize: 病历大小,
+  // recordHash: 病历的hash值
   var requestJson = {
-    patientNo: patientNo,
-    recordNo: recordNo,
-    recordName: recordName,
-    recordPath: recordPath,
-    recordSize: recordSize,
-    recordHash: md5
+    fnc: "uploadRecordData",
+    args: [
+      patientNo,
+      doctorNo,
+      hisNO,
+      recordNo,
+      recordName,
+      recordPath,
+      recordSize,
+      md5
+    ]
   };
-  var str = JSON.stringify(requestJson);
-  console.log("-------str-----" + str);
-  res.send({ ret_code: datatime, md5: md5 });
+  uploadRecord(requestJson, function(str) {
+    console.log("=====str==========" + str.status);
+    console.log("=====payload==========" + str.payload);
+
+    res.send({
+      status: "OK",
+      detail: str
+    });
+  });
+  // var str = JSON.stringify(requestJson);
+  // console.log("-------str-----" + str);
+  // res.send({ ret_code: datatime, md5: md5 });
 });
 
 module.exports = router;

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -101,13 +102,13 @@ type UploadData struct {
 }
 
 const APPLYINDEX = "TargetNo~RedicalNO~Applier~ApplierNo~ApplierHisNo"
-const InvalidNumArgs = "参数数量错误"
-const MarshalFailed = "json序列化错误"
-const SaveStubFailed = "存入区块链失败"
-const SaveBlockSuc = "成功存入区块链"
-const CreateKey = "创建组合键失败"
-const GetDataFBlock = "从区块链中取出数据失败"
-const UnmarshlFailed = "json反序列化失败"
+const InvalidNumArgs = "Args Number Failed"
+const MarshalFailed = "json Mashal Failed"
+const SaveStubFailed = "Save state Fail"
+const SaveBlockSuc = "Save state Sucess"
+const CreateKey = "Create Key Fail"
+const GetDataFBlock = "Get state Fail"
+const UnmarshlFailed = "Json Unmarshl Fail"
 const INDEX = "PatientNo~DocterNo~HisNo~RecordNo~RecordName~RecordPath~RecordSize~RecordHash"
 
 type ErrReason struct {
@@ -205,9 +206,9 @@ func (sc *SimpleChaincode) saveHospitalized(stub shim.ChaincodeStubInterface, ar
 	Sha1Inst := sha1.New()
 	Sha1Inst.Write([]byte(args[3]))
 	Result := Sha1Inst.Sum([]byte(""))
-
-	hisData.IdCard = string(Result[:])
-	logger.Infof("=====string(Result[:])====%s=====", string(Result[:]))
+	s := hex.EncodeToString(Result)
+	hisData.IdCard = s
+	logger.Infof("=====s====%s=====", s)
 	hisData.Sex = args[4]
 	hisData.Address = args[5]
 	hisData.Doctor = args[6]
@@ -241,18 +242,109 @@ func (sc *SimpleChaincode) queryHospitalized(stub shim.ChaincodeStubInterface, a
 		return shim.Error(getErrReason(InvalidNumArgs, "0"))
 	}
 	var err error
-
+	var hisData HospitalData
 	//计算身份证号的哈希值
 	Sha1Inst := sha1.New()
 	Sha1Inst.Write([]byte(args[0]))
 	Result := Sha1Inst.Sum([]byte(""))
-	logger.Infof("=====string(Result[:])====%s=====", string(Result[:]))
-	hisDatab, err := stub.GetState(string(Result[:]))
+	s := hex.EncodeToString(Result)
+	logger.Infof("=====string(Result[:])====%s=====", s)
+	hisDatab, err := stub.GetState(s)
+	logger.Infof("=====hisDatab===%s=====", string(hisDatab[:]))
 	if err != nil {
 		return shim.Error(getErrReason(GetDataFBlock, "0"))
 	}
+	err = json.Unmarshal(hisDatab, &hisData)
+	if err != nil {
+		return shim.Error(getErrReason(UnmarshlFailed, "0"))
+	}
 
-	return shim.Success(hisDatab)
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+
+	buffer.WriteString("{\"name\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Name)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"age\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Age)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"phone\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Phone)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"idCard\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.IdCard)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"sex\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Sex)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"address\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Address)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"doctor\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Doctor)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"nurse\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Nurse)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"illness\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Illness)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"treatment\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Treatment)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"medication\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Medication)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"attention\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Attention)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"room\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Room)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"inTime\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.InTime)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"outTime\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.OutTime)
+	buffer.WriteString("\"")
+
+	buffer.WriteString("{\"cost\":")
+	buffer.WriteString("\"")
+	buffer.WriteString(hisData.Cost)
+	buffer.WriteString("\"")
+	buffer.WriteString("}")
+
+	buffer.WriteString("]")
+	return shim.Success(buffer.Bytes())
 }
 
 //args:
@@ -276,7 +368,7 @@ func (sc *SimpleChaincode) applyRemoteData(stub shim.ChaincodeStubInterface, arg
 	if err != nil {
 		return shim.Error(getErrReason(SaveStubFailed, "0"))
 	}
-	return shim.Success(getRetReason("已发出申请", "1"))
+	return shim.Success(getRetReason("Have Applied", "1"))
 }
 
 //patientNo
@@ -309,14 +401,14 @@ func (sc *SimpleChaincode) uploadRecordData(stub shim.ChaincodeStubInterface, ar
 
 	logger.Infof("=====uploadRecordData=k===%s=====", k)
 	if err != nil {
-		return shim.Error(getErrReason("CreateCompositeKey失败", "0"))
+		return shim.Error(getErrReason(CreateKey, "0"))
 	}
 	err = stub.PutState(k, value)
 	if err != nil {
 		return shim.Error(getErrReason(SaveStubFailed, "0"))
 	}
 
-	return shim.Success(getRetReason("上传电子病历成功", "1"))
+	return shim.Success(getRetReason("Upload Sucess", "1"))
 }
 
 //args :patientNo
