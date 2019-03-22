@@ -69,7 +69,7 @@ router.post("/uploadRecord", upload.single("picUrl"), function(req, res, next) {
   // recordSize: 病历大小,
   // recordHash: 病历的hash值
   var requestJson = {
-    fnc: "uploadRecordData",
+    fcn: "uploadRecordData",
     args: [
       patientNo,
       doctorNo,

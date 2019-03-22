@@ -138,12 +138,15 @@ func (sc *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 func (sc *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	fun, args := stub.GetFunctionAndParameters()
 	if fun == "addPatientBasicInfo" {
+		logger.Infof("=====addPatientBasicInfos====%s=====", "addPatientBasicInfo")
 		return sc.addPatientBasicInfo(stub, args)
 
 	} else if fun == "queryPatientBasicInfo" {
 		return sc.queryPatientBasicInfo(stub, args)
 	} else if fun == "saveHospitalized" {
+		logger.Infof("=====saveHospitalized====%s=====", "saveHospitalized")
 		return sc.saveHospitalized(stub, args)
+
 	} else if fun == "queryHospitalized" {
 		return sc.queryHospitalized(stub, args)
 	} else if fun == "applyRemoteData" {
@@ -153,7 +156,8 @@ func (sc *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response 
 	} else if fun == "queryRecordData" {
 		return sc.queryRecordData(stub, args)
 	}
-	return shim.Success(nil)
+	fmt.Println("invoke did not find func: " + fun) //error
+	return shim.Error("Received unknown function invocation")
 
 }
 
@@ -502,7 +506,7 @@ func (sc *SimpleChaincode) queryRecordData(stub shim.ChaincodeStubInterface, arg
 	buffer.WriteString("]")
 	// var err error
 	// var uploadData UploadData
-
+	logger.Infof("========queryRecordData===buffer======buffer========k=%s", buffer.String())
 	return shim.Success(buffer.Bytes())
 }
 

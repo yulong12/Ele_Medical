@@ -118,6 +118,10 @@ function postInvokeRequest(requestJson, getResponse) {
 
         responseJston.status = proposalResponses[0].response.status;
         responseJston.payload = proposalResponses[0].response.payload.toString();
+        console.log(
+          "-----proposalResponses[0].response.payload.toString()------" +
+            proposalResponses[0].response.payload.toString()
+        );
         var responseJstonstr = JSON.stringify(responseJston);
         console.log("-----responseJstonstr------" + responseJstonstr);
         // build up the request for the orderer to have the transaction committed

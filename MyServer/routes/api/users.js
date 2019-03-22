@@ -19,6 +19,24 @@ router.post("/test", (req, res) => {
     dahua: "你好"
   });
 });
+
+router.post("/queryPatient", (req, res) => {
+  var queryPatientInfo = require("./../myhfc/myhfcInvoke");
+  var idCard = req.body.idCard;
+  var request = {
+    fcn: "queryPatientBasicInfo",
+    args: [idCard]
+  };
+  queryPatientInfo(request, function(str) {
+    console.log("=====str==========" + str.status);
+    console.log("=====payload==========" + str.payload);
+
+    res.send({
+      status: "OK",
+      detail: str
+    });
+  });
+});
 router.post("/addPatient", (req, res) => {
   var addPatientBasicInfo = require("./../myhfc/myhfcInvoke");
   var name = req.body.name;
@@ -65,8 +83,8 @@ router.post("/addPatient", (req, res) => {
       department
     ]
   };
-  var stt = JSON.stringify(request);
-  console.log("-----stt-------" + stt);
+  // var stt = JSON.stringify(request);
+  // console.log("-----stt-------" + stt);
   addPatientBasicInfo(request, function(str) {
     console.log("=====str==========" + str.status);
     console.log("=====payload==========" + str.payload);
@@ -76,11 +94,6 @@ router.post("/addPatient", (req, res) => {
       detail: str
     });
   });
-
-  // res.json({
-  //   status: "sucess",
-  //   dahua: "你好"
-  // });
 });
 
 module.exports = router;

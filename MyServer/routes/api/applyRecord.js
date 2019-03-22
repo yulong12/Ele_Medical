@@ -1,7 +1,7 @@
 //
 const express = require("express");
 const router = express.Router();
-var applyRecord = require("./../myhfc/myhfcInvoke");
+var applyRecordData = require("./../myhfc/myhfcInvoke");
 router.get("/applyRecord", (req, res) => {
   res.json({ msg: "login works" });
 });
@@ -19,7 +19,7 @@ router.post("/applyRecord", (req, res) => {
   var applierNo = req.body.applierNo;
   var applierHisNo = req.body.applierHisNo;
   var requestJson = {
-    fnc: "applyRemoteData",
+    fcn: "applyRemoteData",
     args: [
       targetNo, //请求医院编号
       redicalNO, //请求病历编号
@@ -28,7 +28,9 @@ router.post("/applyRecord", (req, res) => {
       applierHisNo //请求人所在医院编号
     ]
   };
-  applyRecord(requestJson, function(str) {
+  var stt = JSON.stringify(requestJson);
+  console.log("-----stt-------" + stt);
+  applyRecordData(requestJson, function(str) {
     console.log("=====str==========" + str.status);
     console.log("=====payload==========" + str.payload);
 

@@ -25,7 +25,7 @@ router.post("/addHospitalized", (req, res) => {
   var cost = req.body.cost;
 
   var requestJson = {
-    fnc: "saveHospitalized",
+    fcn: "saveHospitalized",
     args: [
       name,
       age,
@@ -45,6 +45,7 @@ router.post("/addHospitalized", (req, res) => {
       cost
     ]
   };
+
   addHospitalized(requestJson, function(str) {
     console.log("=====str==========" + str.status);
     console.log("=====payload==========" + str.payload);
