@@ -15,6 +15,7 @@
     "fabric-ca-client": "^1.0.2",
     "fabric-client": "^1.2.1",
     "fs": "0.0.1-security",
-    "multer": "^1.4.1"
+    "multer": "^1.4.1",
+    "node-rsa": "^1.0.5"
   }
 }
