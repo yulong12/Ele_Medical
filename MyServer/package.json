@@ -16,6 +16,7 @@
     "fabric-client": "^1.2.1",
     "fs": "0.0.1-security",
     "multer": "^1.4.1",
-    "node-rsa": "^1.0.5"
+    "node-rsa": "^1.0.5",
+    "selfsigned": "^1.10.4"
   }
 }

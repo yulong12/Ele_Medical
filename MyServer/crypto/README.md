@@ -13,3 +13,9 @@ genrsa -out rsa_xiaoming_private_key.pem 1024
 
 rsa -in rsa_xiaoming_private_key.pem -pubout -out rsa_public_key.pem
 ```
+
+### 3 打印出证书内容
+
+```
+openssl x509 -in cert.pem -noout -text
+```

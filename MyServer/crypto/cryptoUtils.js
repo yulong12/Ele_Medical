@@ -1,5 +1,4 @@
 var crypto = require("crypto");
-
 const padding = crypto.constants.RSA_PKCS1_PADDING;
 const NodeRSA = require("node-rsa");
 const fs = require("fs");
@@ -76,10 +75,65 @@ module.exports = {
       if (exists) {
         var pem = fs.readFileSync(publicKeyPath, "utf8");
         var key = new NodeRSA(pem);
-        if (key.verify(dataStr, signStr, "bash64")) {
-          callback("true");
-        }
+        var verifySign = key.verify(
+          Buffer.from(dataStr),
+          signStr,
+          "base64",
+          "base64"
+        );
+        console.log("------verifySign------" + verifySign);
+        callback(verifySign);
       }
     });
+  },
+
+  //  attrs = attrs || [{
+  //     name: 'commonName',
+  //     value: 'example.org'
+  //   }, {
+  //     name: 'countryName',
+  //     value: 'US'
+  //   }, {
+  //     shortName: 'ST',
+  //     value: 'Virginia'
+  //   }, {
+  //     name: 'localityName',
+  //     value: 'Blacksburg'
+  //   }, {
+  //     name: 'organizationName',
+  //     value: 'Test'
+  //   }, {
+  //     shortName: 'OU',
+  //     value: 'Test'
+  //   }];
+
+  SelfSign: function SelfSign(attrs, savePath) {
+    var selfsigned = require("selfsigned");
+    // var attrs = [
+    //   { name: "commonName", value: "contoso.com", card: "130521199203080776" }
+    // ];
+    var pems = selfsigned.generate(attrs, { days: 365 });
+    console.log(pems);
+    var privateCert = pems.private;
+    var publicCert = pems.public;
+    var cert = pems.cert;
+    this.SaveData(privateCert, "private.pem", savePath);
+    this.SaveData(publicCert, "public.pem", savePath);
+    this.SaveData(cert, "cert.pem", savePath);
+    console.log("----private-------" + pems.private);
+  },
+  SaveData: function SaveData(data, fileName, filePath) {
+    fs.writeFile(
+      filePath + "/" + fileName,
+      data,
+      { flag: "w", encoding: "utf-8", mode: "0666" },
+      function(err) {
+        if (err) {
+          console.log("文件写入失败");
+        } else {
+          console.log("文件写入成功");
+        }
+      }
+    );
   }
 };
