@@ -75,11 +75,15 @@
     },
     methods: {
       submitForm(formName) {
+     
         this.$refs[formName].validate((valid) => {
+        
           if (valid) {
+                 alert("请患者授权");
             alert('submit!');
           } else {
-            console.log('error submit!!');
+             alert('error submit!!');
+        
             return false;
           }
         });

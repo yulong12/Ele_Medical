@@ -11,6 +11,10 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="_login">登录</el-button>
+         
+          </el-form-item>
+          <el-form-item>
+               <el-button type="primary" @click="_register">注册</el-button>
           </el-form-item>
         </el-form>
         <p class="tips">本系统有三个测试的用户账号为root、doctor、nurse、
@@ -75,6 +79,11 @@
             type: 'error'
           });
         });
+      },
+
+      _register(){
+          console.log("==========================");
+           this.$router.push({path: 'regist'});
       },
       // 用户名文本框回车跳到密码文本框
       nextInput () {

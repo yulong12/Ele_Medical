@@ -37,11 +37,6 @@
               <el-menu-item index="3-1"><router-link to="addDoctor">增加医生信息</router-link></el-menu-item>
               <el-menu-item index="3-2"><router-link to="editDoctor">编辑医生信息</router-link></el-menu-item>
             </el-menu-item-group>
-            <!-- <el-menu-item-group title="日常工作以及其他">
-              <el-menu-item index="3-3"><router-link to="shiftDoctor">轮班</router-link></el-menu-item>
-              <el-menu-item index="3-4"><router-link to="staffFlow">人员流动信息</router-link></el-menu-item>
-              <el-menu-item index="3-5"><router-link to="officeComplaints">科室投诉信息</router-link></el-menu-item>
-            </el-menu-item-group> -->
           </el-submenu>
           <el-submenu index="4" v-if="type === '01' || type === '04'">
             <template slot="title">
@@ -53,42 +48,10 @@
               <el-menu-item index="4-1"><router-link to="register">挂号</router-link></el-menu-item>
               <el-menu-item index="4-2"><router-link to="registerManage">管理挂号信息</router-link></el-menu-item>
               <el-menu-item index="4-3"><router-link to="takecash">缴费办理</router-link></el-menu-item>
+              <el-menu-item index="4-4"><router-link to="sendCard">办理健康卡</router-link></el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <!-- <el-submenu index="5" v-if="type === '01' || type === '05'">
-            <template slot="title">
-              <i class="icon-pharmacy"></i>
-              <span slot="title">药房系统</span>
-            </template>
-            <el-menu-item-group>
-              <span slot="title">
-                <i class="icon-chineseMedicine"></i>中药房
-              </span>
-              <el-menu-item index="5-1"><router-link to="prescriptionManageC">处理处方</router-link></el-menu-item>
-              <el-menu-item index="5-2"><router-link to="drugInfosC">药品查询</router-link></el-menu-item>
-              <el-menu-item index="5-3"><router-link to="drugApplyC">申请药物补给</router-link></el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group>
-              <span slot="title">
-                <i class="icon-WesternMedicine"></i>西药房
-              </span>
-              <el-menu-item index="5-4"><router-link to="prescriptionManageW">处理处方</router-link></el-menu-item>
-              <el-menu-item index="5-5"><router-link to="drugInfosW">药品查询</router-link></el-menu-item>
-              <el-menu-item index="5-6"><router-link to="drugApplyW">申请药物补给</router-link></el-menu-item>
-            </el-menu-item-group>
-          </el-submenu> -->
-          <!-- <el-submenu index="6" v-if="type === '01' || type === '06'">
-            <template slot="title">
-              <i class="icon-DrugStorage"></i>
-              <span slot="title">药库系统</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="6-1"><router-link to="drugStorage">进药</router-link></el-menu-item>
-              <el-menu-item index="6-2"><router-link to="checkDrugStorage">查看药库</router-link></el-menu-item>
-              <el-menu-item index="6-3"><router-link to="stockRemoval">出药</router-link></el-menu-item>
-              <el-menu-item index="6-3"><router-link to="trashy">浪费的药物</router-link></el-menu-item>
-            </el-menu-item-group>
-          </el-submenu> -->
+
           <el-submenu index="7">
             <template slot="title">
               <i class="icon-patient"></i>
@@ -115,6 +78,34 @@
               <!-- <el-menu-item index="8-5"><router-link to="queryCheck">审核电子病历</router-link></el-menu-item> -->
             </el-menu-item-group>
           </el-submenu>
+
+             <el-submenu index="9">
+            <template slot="title">
+              <i class="icon-hospital"></i>
+              <span slot="title">科室信息管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="8-1"><router-link to="addDepartment">增加科室信息</router-link></el-menu-item>
+              <el-menu-item index="8-2"><router-link to="deleteDepartment">删除科室信息</router-link></el-menu-item>
+              <el-menu-item index="8-3"><router-link to="editDepartment">编辑科室信息</router-link></el-menu-item>
+              <el-menu-item index="8-4"><router-link to="queryDepartment">查询科室信息</router-link></el-menu-item>
+              <!-- <el-menu-item index="8-5"><router-link to="queryCheck">审核电子病历</router-link></el-menu-item> -->
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="10">
+            <template slot="title">
+              <i class="icon-hospital"></i>
+              <span slot="title">病历模版管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="8-1"><router-link to="uploadRecordTemplate">上传电子病历模版</router-link></el-menu-item>
+              <el-menu-item index="8-2"><router-link to="queryRecordTemplate">查询电子病历模版</router-link></el-menu-item>
+              <el-menu-item index="8-3"><router-link to="deleteRecordTemplate">删除电子病历模版</router-link></el-menu-item>
+              <el-menu-item index="8-4"><router-link to="downRecordTemplate">下载电子病历模版</router-link></el-menu-item>
+              <!-- <el-menu-item index="8-5"><router-link to="queryCheck">审核电子病历</router-link></el-menu-item> -->
+            </el-menu-item-group>
+          </el-submenu>
+
         </el-menu>
       </div>
     <!-- 菜单结束 -->
