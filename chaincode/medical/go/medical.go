@@ -82,6 +82,16 @@ type ApplyRemoteRecord struct {
 	ApplierHisNo string `json:"ApplierHisNo"`
 }
 
+// idCard sex age address PublicKey hisNo
+type HelthCard struct {
+	IdCardH   string `json:"IdCardH"`
+	Sex       string `json:"Sex"`
+	Age       string `json:"Age"`
+	Address   string `json:"Address"`
+	PublicKey string `json:"PublicKey"`
+	HisNo     string `json:"HisNo"`
+}
+
 //patientNo:病人ID
 //DocterNo:医生职工编号
 //HisNo：医院编号
@@ -155,6 +165,8 @@ func (sc *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response 
 		return sc.uploadRecordData(stub, args)
 	} else if fun == "queryRecordData" {
 		return sc.queryRecordData(stub, args)
+	} else if fun == "makeCard" {
+		return sc.makeCard(stub, args)
 	}
 	fmt.Println("invoke did not find func: " + fun) //error
 	return shim.Error("Received unknown function invocation")
@@ -178,6 +190,44 @@ type HospitalData struct {
 	InTime     string `json:"InTime"`
 	OutTime    string `json:"OutTime"`
 	Cost       string `json:"Cost"`
+}
+
+// idCardh sex age address PublicKey hisNo
+func (sc *SimpleChaincode) makeCard(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	if len(args) != 6 {
+		return shim.Error(getErrReason(InvalidNumArgs, "0"))
+	}
+
+	var err error
+	var helthCard HelthCard
+	helthCard.IdCardH = args[0]
+	helthCard.Sex = args[1]
+	helthCard.Age = args[2]
+	helthCard.Address = args[3]
+	helthCard.PublicKey = args[4]
+	helthCard.HisNo = args[5]
+	helthCardByteDate, err := json.Marshal(helthCard)
+	if err != nil {
+		return shim.Error(getErrReason(MarshalFailed, "0"))
+	}
+	k, err := stub.CreateCompositeKey("idCardH~hisNO", []string{helthCard.IdCardH, helthCard.HisNo})
+	if err != nil {
+		return shim.Error(getErrReason(CreateKey, "0"))
+	}
+	b, err := stub.GetState(k)
+	if err != nil {
+		return shim.Error(getErrReason(GetDataFBlock, "0"))
+	}
+	if b == nil {
+		err = stub.PutState(k, helthCardByteDate)
+		if err != nil {
+			return shim.Error(getErrReason(SaveStubFailed, "0"))
+		}
+	} else {
+		return shim.Error(getErrReason("has existed", "0"))
+	}
+
+	return shim.Success(getRetReason(SaveBlockSuc, "1"))
 }
 
 //住院病历存储

@@ -186,10 +186,46 @@ function postInvokeRequest(requestJson, getResponse) {
         promises.push(txPromise);
 
         return Promise.all(promises);
+      } else {
+        console.error(
+          "Failed to send Proposal or receive valid response. Response null or status is not 200. exiting..."
+        );
+        throw new Error(
+          "Failed to send Proposal or receive valid response. Response null or status is not 200. exiting..."
+        );
+      }
+    })
+    .then(results => {
+      console.log(
+        "Send transaction promise and event listener promise have completed"
+      );
+      // check the results in the order the promises were added to the promise all list
+      if (results && results[0] && results[0].status === "SUCCESS") {
+        console.log("Successfully sent transaction to the orderer.");
+      } else {
+        console.log(
+          "Failed to order the transaction. Error code: " + results[0].status
+        );
+      }
+
+      if (results && results[1] && results[1].event_status === "VALID") {
+        console.log(
+          "Successfully committed the change to the ledger by the peer"
+        );
+      } else {
+        console.log(
+          "Transaction failed to be committed to the ledger due to ::" +
+            results[1].event_status
+        );
       }
     })
     .then(value => {
+      console.log("=====status==========" + responseJston.status);
+      console.log("=====payload==========" + responseJston.payload);
       getResponse(responseJston);
+    })
+    .catch(err => {
+      console.error("Failed to invoke successfully :: " + err);
     });
 }
 module.exports = postInvokeRequest;

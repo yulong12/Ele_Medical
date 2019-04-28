@@ -40,22 +40,23 @@ module.exports = {
     });
   },
   //生成公钥和私钥
-  Generator: function generator(callback) {
+  Generator: function generator(publicKeyPath, privateKeyPath, callback) {
     // const publicKeyPath = "./pem/public.pem";
     // const privateKeyPath = "./pem/private.pem";
     var key = new NodeRSA({ b: 512 });
+    console.log("==========publicKeyPath=============" + publicKeyPath);
     key.setOptions({ encryptionScheme: "pkcs1" });
 
     const publicKey = key.exportKey("public");
-    // fs.writeFile(publicPemPath, publicKey, err => {
-    //   if (err) throw err;
-    //   console.log("公钥已保存");
-    // });
+    fs.writeFile(publicKeyPath, publicKey, err => {
+      if (err) throw err;
+      console.log("公钥已保存");
+    });
     const privateKey = key.exportKey("private");
-    // fs.writeFile(privatePemPath, privateKey, err => {
-    //   if (err) throw err;
-    //   console.log("私钥已保存");
-    // });
+    fs.writeFile(privateKeyPath, privateKey, err => {
+      if (err) throw err;
+      console.log("私钥已保存");
+    });
     callback(publicKey, privateKey);
   },
   //使用私钥签名
